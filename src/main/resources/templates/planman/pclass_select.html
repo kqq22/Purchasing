@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<HEAD><TITLE>选择物资</TITLE>
+    <META http-equiv=Content-Language content=zh-cn>
+    <META http-equiv=Content-Type content="text/html; charset=UTF-8">
+    <META content="MSHTML 6.00.2900.5626" name=GENERATOR>
+    <META content=FrontPage.Editor.Document name=ProgId><LINK
+            href="css/style.css" rel=stylesheet>
+    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.8.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.8.5/themes/icon.css">
+    <script type="text/javascript" src="../jquery-easyui-1.8.5/jquery.min.js"></script>
+    <script type="text/javascript" src="../jquery-easyui-1.8.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../jquery-easyui-1.8.5/locale/easyui-lang-zh_CN.js"></script>
+    <SCRIPT language=JAVASCRIPT>
+        function delCheckbox(){
+            var objCheckbox = document.getElementsByName("p_orderno");
+            var count=0;
+            for(var i=0;i<objCheckbox.length;i++){
+                if(objCheckbox[i].checked){
+                    count++;
+                    var obj=document.getElementById("table1");
+                    obj.deleteRow(i+1);
+                }
+            }
+            if(count==0){
+                alert("请选择一条要删除的数据。");
+            }
+        }
+
+        function productX()
+        {
+            window.open("wangyeduihakuang.htm","Canny1","toolbar=0,location=0,status=0,menubar=0,scrollbars=0,width=600,height=440,left=100,top=60");
+
+        }
+    </SCRIPT>
+
+    <FORM name=form action=Order_newform.asp method=post
+          encType=multipart/form-data></FORM></HEAD>
+<BODY>
+<CENTER>
+    <TABLE width="90%" align=center border=0>
+        <TBODY>
+        <TR>
+            <TD align=middle><FONT
+                    color=red>选择物资</FONT>====&gt;录入需求计划====&gt;需求计划确认</TD></TR></TBODY></TABLE>
+    <TABLE cellSpacing=1 cellPadding=0 width="100%" bgColor=#ffffff
+           borderColorLight=#ffffff border=0>
+        <TBODY>
+        <tr>
+            <td>
+                <div align="center">
+                    <FONT color=#000064>◆&nbsp;</FONT><FONT color=#000064>首页
+                    上一页</FONT>&nbsp;<A
+                        href="#"><FONT
+                        color=#0000be>下一页</FONT></A>&nbsp;<A
+                        href="#"><FONT
+                        color=#0000be>尾页</FONT></A><FONT color=#000064>&nbsp;共 40 个需求计划 每页10
+                    个需求计划</FONT><FONT color=#000064>&nbsp;页次:<FONT
+                        color=blue>1</FONT>/4页</FONT><FONT color=#000064>&nbsp;◆&nbsp;</FONT>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <!-- ------------------------ 表格开始 -------------------------------------------->
+                    <table class="easyui-datagrid" id="tb" style="width:1280px"></table>
+
+
+
+                    <!-- ------------------------ 表格结束 -------------------------------------------->
+                    <div align="center">
+                        请先选择物资，然后点击：<A><FONT
+                            size=3 ><U id="next">下一步</U>
+                    </FONT></A></div>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </TBODY>
+    </TABLE>
+    </FORM>
+</CENTER>
+
+<script type="text/javascript" th:inline="none">
+    var url;
+    $(function () {
+        $('#tb').datagrid({
+            url: '/findMaterialAll',
+            method: 'get',
+            columns: [[
+                {field:'ck',title:'选择',checkbox:true,width: '10%'},
+                {field: 'id', title: '序号', width: '19%'},
+                {field: 'materialNum', title: '产品编码', width: '30%'},
+                {field: 'materialName', title: '产品名称', width: '50%'},
+            ]],
+            fitColumns: false, //自适应宽度，占满,不能和冻结列同时设置成true
+            striped: true,  //斑马线效果
+            idField: 'sno',  //主键列
+            rownumbers: true,  //显示行号
+            pagination: true,
+            pageList: [2, 4, 6, 10], //每页行数选择列表
+            pageSize: 4, //设置默认初始的每页行数rows
+            pageNumber: 1, //设置默认初始的页码page
+            remoteSort: false, //是否服务器端排序，设成false才可以在页面进行排序
+            //sortName:'sname', //指定列名可以进行排序
+            multiSort: true,
+
+        });
+
+    });
+    $("#next").click(function () {
+        var ids = [];
+        var rows = $('#tb').datagrid('getSelections');
+        for(var i=0;i<rows.length; i++){
+            ids.push(rows[i].id);
+        }
+        if (rows.length>=1) {
+            location.href="../findMaterial?ids="+ids;
+        }else {
+            alert("请至少选择一行数据！");
+        }
+    });
+</script>
+</BODY>
+</HTML>
