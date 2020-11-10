@@ -39,7 +39,7 @@ public class EnquireController {
     private QuoteService quoteService;
 
     /**
-     * 添加询价书
+     * 添加询价书findEnquireAll
      * @param enquire
      * @param request
      * @return

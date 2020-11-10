@@ -593,7 +593,7 @@
 
             <TR class=t2>
               <TD align=right>审核人：</TD>
-              <TD align=right>张惠</TD>
+              <TD align=right th:text="${contractApply.getLeader()}"></TD>
               <TD align=right>审核时间：</TD>
               <TD align=right th:text="${#dates.format(contractApply.getLeadDate(),'yyyy-MM-dd')}"></TD>
             </TR>
@@ -616,7 +616,7 @@
 
             <TR class=t2>
               <TD align=right>审核人：</TD>
-              <TD align=right>张惠</TD>
+              <TD align=right th:text="${contractApply.getPlaner()}"></TD>
               <TD align=right>审核时间：</TD>
               <TD align=right th:text="${#dates.format(contractApply.getPlanDate(),'yyyy-MM-dd')}"></TD>
             </TR>

@@ -28,6 +28,7 @@ public class ContractApplyController {
 
     @Resource
     private EmployeeMapper employeeMapper;
+
     /**
      * 添加合同申请表
      * @return
@@ -206,7 +207,7 @@ public class ContractApplyController {
      * @return
      */
     @RequestMapping("/updateContractById")
-    public String updateContractById(ContractApply contractApply){
+    public String updateContractById(ContractApply contractApply,HttpSession session){
         //System.out.println(contractApply.getId()+"--"+contractApply.getLeadAgree()+"--"+contractApply.getLeadOpinion());
         IdMapping idMapping = new IdMapping();
         idMapping.setContAppId(contractApply.getId());
@@ -215,7 +216,13 @@ public class ContractApplyController {
         }else {
             idMapping.setStatus("C001-131");
         }
-        contractApply.setLeadDate(new Date());
+        SysUsers sysUsers = (SysUsers)session.getAttribute("users");
+        EmployeeExample employeeExample = new EmployeeExample();
+        employeeExample.createCriteria().andUserIdEqualTo(sysUsers.getId());
+        List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+        contractApply.setPlanerId(employeeList.get(0).getId().toString());
+        contractApply.setPlaner(employeeList.get(0).getEmpName());
+        contractApply.setPlanDate(new Date());
         int contractRow = contractApplyService.updateContractById(contractApply);
         int idmappingRow = idMappingService.updateContractStatus(idMapping);
         //System.out.println(contractRow+"--"+idmappingRow);
@@ -228,7 +235,7 @@ public class ContractApplyController {
      * @return
      */
     @RequestMapping("/updateContractById2")
-    public String updateContractById2(ContractApply contractApply){
+    public String updateContractById2(ContractApply contractApply,HttpSession session){
         //System.out.println(contractApply.getId()+"--"+contractApply.getLeadAgree()+"--"+contractApply.getLeadOpinion());
         IdMapping idMapping = new IdMapping();
         idMapping.setContAppId(contractApply.getId());
@@ -237,6 +244,12 @@ public class ContractApplyController {
         }else {
             idMapping.setStatus("C001-141");
         }
+        SysUsers sysUsers = (SysUsers)session.getAttribute("users");
+        EmployeeExample employeeExample = new EmployeeExample();
+        employeeExample.createCriteria().andUserIdEqualTo(sysUsers.getId());
+        List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+        contractApply.setLeaderId(employeeList.get(0).getId().toString());
+        contractApply.setLeader(employeeList.get(0).getEmpName());
         contractApply.setLeadDate(new Date());
         int contractRow = contractApplyService.updateContractById(contractApply);
         int idmappingRow = idMappingService.updateContractStatus(idMapping);
@@ -260,6 +273,7 @@ public class ContractApplyController {
         employeeExample.createCriteria().andUserIdEqualTo(sysUsers.getId());
         List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
         m.addAttribute("employee",employeeList.get(0));
+
         return "contractmanager/Apply_changzhangshenpi";
     }
 

@@ -39,13 +39,9 @@ public class OrdersServiceImpl implements OrdersService {
             OrdersExample.Criteria criteria = ordersExample.createCriteria();
             if(orders.getMaterialCode()!=null&&orders.getMaterialCode()!=""){
                 criteria.andMaterialCodeLike("%"+orders.getMaterialCode().trim()+"%");
-            }else {
-                ordersExample=null;
             }
             if(orders.getMaterialName()!=null&&orders.getMaterialName()!=""){
                 criteria.andMaterialNameLike("%"+orders.getMaterialName().trim()+"%");
-            }else{
-                ordersExample=null;
             }
         }
         //根据条件查询

@@ -101,6 +101,7 @@
     LEFT JOIN enquire_detail d ON e.ID=d.ENQUIRE_ID
     LEFT JOIN id_mapping i ON i.ENQUIRE_ID = e.ID
     LEFT JOIN stock s ON s.ID = i.STOCK_ID
+    WHERE i.STATUS = 'C001-80'
   </select>
 
   <select id="selectEnquireById" resultMap="BaseResultMap">
