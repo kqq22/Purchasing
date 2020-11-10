@@ -1,5 +1,8 @@
 package com.turling.purchasing.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -23,8 +26,10 @@ public class Orders implements Serializable {
 
     private BigDecimal sumPrice;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date startDate;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date endDate;
 
     private String address;
@@ -40,6 +45,16 @@ public class Orders implements Serializable {
     private String email;
 
     private String remark;
+
+    private IdMapping idMapping;
+
+    public IdMapping getIdMapping() {
+        return idMapping;
+    }
+
+    public void setIdMapping(IdMapping idMapping) {
+        this.idMapping = idMapping;
+    }
 
     private static final long serialVersionUID = 1L;
 

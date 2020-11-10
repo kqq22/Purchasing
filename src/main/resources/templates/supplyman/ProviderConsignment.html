@@ -1,5 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD><TITLE>查看合同</TITLE>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<HEAD><TITLE>查看合同</TITLE>
+  <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.8.5/themes/default/easyui.css">
+  <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.8.5/themes/icon.css">
+  <script type="text/javascript" src="../jquery-easyui-1.8.5/jquery.min.js"></script>
+  <script type="text/javascript" src="../jquery-easyui-1.8.5/jquery.easyui.min.js"></script>
+  <script type="text/javascript" src="../jquery-easyui-1.8.5/locale/easyui-lang-zh_CN.js"></script>
   <META http-equiv=Content-Language content=zh-cn>
   <META http-equiv=Content-Type content="text/html; charset=UTF-8"><LINK
             href="../../static/css/style.css" rel=stylesheet>
@@ -7,16 +12,77 @@
           src="css/pub_Calendar.js"></SCRIPT>
 
   <META content="MSHTML 6.00.2900.5626" name=GENERATOR></HEAD>
+<style>
+
+  TD {
+    FONT-SIZE: 11px; COLOR: #000000; FONT-FAMILY: tahoma,Verdana, Arial, Helvetica, sans-serif
+  }
+  TR.T1 {
+    FONT-WEIGHT: normal; FONT-SIZE: 11px; BACKGROUND: #99ccff; COLOR: #ffffff; FONT-FAMILY: tahoma,Verdana, Arial, Helvetica, sans-serif;
+    HEIGHT: 20px
+  }
+  TR.T2 {
+    FONT-WEIGHT: normal; FONT-SIZE: 11px; BACKGROUND: #f2f8ff; COLOR: #ffffff; FONT-FAMILY: tahoma,Verdana, Arial, Helvetica, sans-serif;
+    HEIGHT: 20px
+  }
+  TD.T1 {
+    FONT-WEIGHT: normal; FONT-SIZE: 11px; BACKGROUND: #99ccff; COLOR: #000000; FONT-FAMILY: tahoma,Verdana, Arial, Helvetica, sans-serif;
+    HEIGHT: 20px
+  }
+  TD.T2 {
+    FONT-WEIGHT: normal; FONT-SIZE: 11px; BACKGROUND: #f2f8ff; COLOR: #000000; FONT-FAMILY: tahoma,Verdana, Arial, Helvetica, sans-serif;
+    HEIGHT: 20px
+  }
+  P {
+    FONT-SIZE: 11px; FONT-FAMILY: tahoma,Verdana, Arial, Helvetica, sans-serif
+  }
+  DIV {
+    FONT-SIZE: 11px; FONT-FAMILY: tahoma,Verdana, Arial, Helvetica, sans-serif
+  }
+  BODY {
+    FONT-SIZE: 11px; FONT-FAMILY: tahoma,Verdana, Arial, Helvetica, sans-serif
+  }
+  A {
+    FONT-SIZE: 11px; FONT-FAMILY: tahoma,Verdana, Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+  }
+  A:link {
+    COLOR: #0000e0; TEXT-DECORATION: none
+  }
+  A:visited {
+    COLOR: #0000e0; TEXT-DECORATION: none
+  }
+  A:active {
+    COLOR: #0000e0; TEXT-DECORATION: none
+  }
+  A:hover {
+    FONT-SIZE: 11px; COLOR: #cc0000; TEXT-DECORATION: underline
+  }
+  SELECT {
+    BORDER-RIGHT: #cccccc 0px double; BORDER-TOP: #cccccc 0px double; FONT-SIZE: 11px; BORDER-LEFT: #cccccc 0px double; COLOR: #000000; BORDER-BOTTOM: #cccccc 0px double; FONT-FAMILY: Tahoma, sans-serif; BACKGROUND-COLOR: #ffffff
+  }
+  INPUT {
+    BORDER-TOP-WIDTH: 1px; PADDING-RIGHT: 1px; PADDING-LEFT: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 11px; BORDER-LEFT-COLOR: #cccccc; BORDER-BOTTOM-WIDTH: 1px; BORDER-BOTTOM-COLOR: #cccccc; PADDING-BOTTOM: 1px; BORDER-TOP-COLOR: #cccccc; PADDING-TOP: 1px; FONT-FAMILY: Tahoma, sans-serif; HEIGHT: 18px; BORDER-RIGHT-WIDTH: 1px; BORDER-RIGHT-COLOR: #cccccc
+  }
+  TEXTAREA {
+    BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 11px; BORDER-LEFT-COLOR: #000000; BORDER-BOTTOM-WIDTH: 1px; BORDER-BOTTOM-COLOR: #000000; BORDER-TOP-COLOR: #000000; FONT-FAMILY: Tahoma, sans-serif; BACKGROUND-COLOR: #efefef; BORDER-RIGHT-WIDTH: 1px; BORDER-RIGHT-COLOR: #000000
+  }
+  FONT.code {
+    FONT-FAMILY: Monaco, Courier, Courier New
+  }
+  CODE {
+    FONT-SIZE: 11px; FONT-FAMILY: "Courier"
+  }
+  BODY {
+    SCROLLBAR-FACE-COLOR: #dee3e7; SCROLLBAR-HIGHLIGHT-COLOR: #ffffff; SCROLLBAR-SHADOW-COLOR: #dee3e7; SCROLLBAR-3DLIGHT-COLOR: #d1d7dc; SCROLLBAR-ARROW-COLOR: #006699; SCROLLBAR-TRACK-COLOR: #efefef; SCROLLBAR-DARKSHADOW-COLOR: #98aab1
+  }
+
+</style>
 <BODY>
 <CENTER>
   <FORM name=form action=ProviderConsignment.asp method=post>
     <TABLE style="LINE-HEIGHT: 30px" cellSpacing=1 cellPadding=0 width="100%"
            bgColor=#336699 borderColorLight=#006699 border=0>
       <TBODY>
-      <TR>
-        <TD>
-          <TABLE cellSpacing=1 cellPadding=3 width="100%" border=0>
-            <TBODY>
             <TR bgColor=#ffffff>
               <TD align=middle width="100%" bgColor=#ffffff colSpan=20
                   height=22><B>
@@ -38,49 +104,70 @@
                                                                                                                                                                                  alt=日历对话框 src="ProviderConsignment.files/schedure_datetime.gif"
                                                                                                                                                                                  width=16 align=absMiddle> &nbsp;&nbsp;<INPUT onclick=submit_form_cx() type=button value="查 询">
               </TD></TR>
-            <TR>
-              <TD align=middle width="100%" bgColor=#ffffff colSpan=10
-                  height=22><FORM name="form1" action="" method="Post">
-                <CENTER><FONT color=#000064>◆&nbsp;</FONT><FONT color=#000064>首页
-                  上一页</FONT>&nbsp;<FONT color=#000064>下一页 尾页</FONT><FONT
-                        color=#000064>&nbsp;共 4 个合同 每页10 个合同</FONT><FONT
-                        color=#000064>&nbsp;页次:<FONT color=blue>1</FONT>/1页</FONT><FONT
-                        color=#000064>&nbsp;◆&nbsp;</FONT> </CENTER></TD></TR>
-            <TR class=t1>
-              <TD noWrap align=middle>序号</TD>
-              <TD noWrap align=middle>合同号</TD>
-              <TD noWrap align=middle>合同标的</TD>
-              <TD noWrap align=middle>合同金额</TD>
-              <TD noWrap align=middle>签定时间</TD>
-            </TR>
-            <TR class=t2>
-              <TD>1</TD>
-              <TD><A
-                      href="contract_view.htm">2010200540580090</A></TD>
-              <TD>wqteswgdsfdsdshfsdgd</TD>
-              <TD align=right>12531846</TD>
-              <TD>2010/01/05</TD>
-            <TR class=t2>
-              <TD>2</TD>
-              <TD><A
-                      href="contract_view.htm">2010200540580086</A></TD>
-              <TD>kljo</TD>
-              <TD align=right>51842</TD>
-              <TD>2010/01/05</TD>
-            <TR class=t2>
-              <TD>3</TD>
-              <TD><A
-                      href="contract_view.htm">20102005405800081</A></TD>
-              <TD>fdsf</TD>
-              <TD align=right>880000</TD>
-              <TD>2010/01/05</TD>
-            </TR>
-            <TR>
-              <TD class=t2 colSpan=10><FONT
-                      color=red>打印状态注释:</FONT><BR>&nbsp;&nbsp;&nbsp;&nbsp;为便于供应商查看合同是否已打印，当打印完后，点击【未打印】按钮，改变打印状态。
-              </TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><INPUT type=hidden
-                                                                         name=p_type> </FORM><!INPUT onclick=submit_form(document.form,1) type=button value=打开> <!input type=button value="录入发货信息" onclick="submit_form(document.form,2)">
-  <SCRIPT language=javascript>
+            </TBODY></TABLE>
+    <table id="tb"></table>
+    <INPUT type=hidden name=p_type> </FORM><!INPUT onclick=submit_form(document.form,1) type=button value=打开> <!input type=button value="录入发货信息" onclick="submit_form(document.form,2)">
+  <SCRIPT language=javascript th:inline="none">
+    $(function () {
+      $('#tb').datagrid({
+        url: '/findContractByStatus',
+        method: 'GET',
+        fitColumns: true, //自适应宽度，占满,不能和冻结列同时设置成true
+        striped: true,  //斑马线效果
+        idField: 'sno',  //主键列
+        rownumbers: true,  //显示行号
+        pagination: true,
+        pageList: [2, 4, 6, 8, 10], //每页行数选择列表
+        pageSize: 2, //设置默认初始的每页行数rows
+        pageNumber: 1, //设置默认初始的页码page
+        remoteSort: false, //是否服务器端排序，设成false才可以在页面进行排序
+        //sortName:'sname', //指定列名可以进行排序
+        multiSort: true,
+        singleSelect:true, //true单选
+        columns: [[
+          {field: 'id', title: '序号', width: 100},
+          {field: 'contAppNum', title: '合同编号', width: 190,},
+          {field: 'status', title: '状态', width: 190, align: 'right',
+            formatter: function(value,row,index){
+              console.log(row);
+              if (row.idMapping.status=="C001-115") {
+                return "未报批";
+              }else if(row.idMapping.status=="C001-120"){
+                return "未审核";
+              }else if(row.idMapping.status=="C001-130"){
+                return "计划员已审批";
+              }else if(row.idMapping.status=="C001-131"){
+                return "计划员审批不通过";
+              }else if(row.idMapping.status=="C001-140"){
+                return "部长已审批";
+              }else if(row.idMapping.status=="C001-141"){
+                return "部长审批不通过";
+              }else if(row.idMapping.status=="C001-150"){
+                return "已签订";
+              }else if(row.idMapping.status=="C001-160"){
+                return "已归档";
+              }
+            }
+          },
+          {field: 'leadDate', title: '审批时间', width: 140, align: 'right',
+            formatter: function(value,row,index){
+              return row.stock.leadDate;
+            }
+          },
+          {field: 'sumPrice', title: '报价总金额', width: 140, align: 'right',
+            formatter: function(value,row,index){
+              return row.quote.overallPrice;
+            }
+          },
+          {field: 'enquireName', title: '对应询价书', width: 140, align: 'right',
+            formatter: function(value,row,index){
+              return row.enquire.enquireName;
+            }
+          }
+        ]]
+      })
+    });
+
     function updmark(contcode)
     {
       form.action="providermark.asp?strcontcode="+contcode+"";

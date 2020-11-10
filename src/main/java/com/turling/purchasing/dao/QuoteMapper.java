@@ -4,8 +4,25 @@ import com.turling.purchasing.entity.Quote;
 import com.turling.purchasing.entity.QuoteExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 public interface QuoteMapper {
+
+    @Select("select max(id) from quote")
+    public Long getLastId();
+
+    List<Quote> selectQuoteAll(@Param("curPage")Integer curPage,@Param("pageSize")Integer pageSize);
+
+    int getCount();
+
+    Quote selectQuoteById(long id);
+
+    List<Quote> selectQuoteByStatus(@Param("curPage")Integer curPage,@Param("pageSize")Integer pageSize);
+
+    int getCountByStatus();
+
+    Quote selectQuoteByIdToContract(long id);
+
     long countByExample(QuoteExample example);
 
     int deleteByExample(QuoteExample example);

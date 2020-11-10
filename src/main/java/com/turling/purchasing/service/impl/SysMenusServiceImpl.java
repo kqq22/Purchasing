@@ -2,11 +2,14 @@ package com.turling.purchasing.service.impl;
 
 import com.turling.purchasing.dao.SysMenusMapper;
 import com.turling.purchasing.entity.Attributes;
+import com.turling.purchasing.entity.SysMenuRole;
 import com.turling.purchasing.entity.SysMenus;
 import com.turling.purchasing.entity.SysMenusExample;
 import com.turling.purchasing.service.SysMenusService;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,12 +24,25 @@ public class SysMenusServiceImpl implements SysMenusService {
      * 查询所有菜单信息
      * @return 返回菜单信息list
      */
-    @Override
-    public List<SysMenus> findSysMenusAll(Integer id) {
-        //根据id查询根节点
-        SysMenusExample sysMenusExample = new SysMenusExample();
-        sysMenusExample.createCriteria().andIdEqualTo(new Long(id));
-        return getChildrenNode(sysMenusMapper.selectByExample(sysMenusExample));
+//    @Override
+//    public List<SysMenus> findSysMenusAll(Integer id) {
+//        //根据id查询根节点
+//        SysMenusExample sysMenusExample = new SysMenusExample();
+//        sysMenusExample.createCriteria().andIdEqualTo(new Long(id));
+//        return getChildrenNode(sysMenusMapper.selectByExample(sysMenusExample));
+//    }
+
+    /**
+     * 查询所有菜单信息
+     * @return 返回菜单信息list
+     */
+    @Order
+    public List<SysMenus> findSysMenusAll(List<SysMenuRole> list){
+        List ids = new ArrayList();
+        for(int i=0;i<list.size();i++){
+            ids.add(list.get(i).getMenuId());
+        }
+        return getChildrenNode(sysMenusMapper.findAll(ids));
     }
 
     /**

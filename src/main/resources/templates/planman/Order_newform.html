@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta http-equiv="Content-Language" content="zh-cn">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -17,19 +14,30 @@
     <title>录入采购需求</title>
 
     <script LANGUAGE="JAVASCRIPT">
+        //获取ID保存
+        var oid;
+
         function submit_form(){
             var len = document.getElementById("price").value.length;
+            var status = document.getElementsByName("status")[0].textContent;
             if(len==0){
                 alert("单价不能为空");
                 return false;
-            }else{
-                window.location="Order_ytb_list.htm";
+            }else if (status=="未完成"){
+                alert("您还未保存完需求计划");
+                return false;
+            }else {
+                window.location="Order_ytb_list";
             }
             var len2 = document.getElementById("p_date1").value.length;
             if(len2==0){
-
-            }else{
-                window.location="Order_ytb_list.htm";
+                alert("交货日期不能为空")
+                return false
+            }else if(status=="未完成"){
+                alert("您还未保存完需求计划");
+                return false;
+            }else {
+                window.location="Order_ytb_list";
             }
         }
 
@@ -37,8 +45,8 @@
             var len = document.getElementById("price").value.length;
             var statu = document.getElementById("no").textContent;
             var orders = $("#orders").serialize();
-            $.param(orders);
-            console.log("表单序列化=============="+arrayToJsonString($('#orders').serializeArray()));
+            //$.param(orders);
+            //console.log("表单序列化=============="+arrayToJsonString($('#orders').serializeArray()));
             $('#orders').form('submit', {
                 url:"/addOrders",
                 success:function(data){
@@ -47,17 +55,6 @@
                 }
             });
 
-        }
-
-        function quedingData(){
-            var obj = document.getElementsByName("p_orderno");
-            //var len = obj.length;
-            var count=0;
-            var no=0;
-            var objTable = document.getElementById("table1");
-            cGetRow=window.event.srcElement.parentElement.parentElement.rowIndex;
-            var oldTr=objTable.rows[2];
-            oldTr.cells[5].innerText="完成";
         }
         function iszero(value,input)
         {
@@ -69,8 +66,8 @@
             }
         }
 
-        function changeData(){
-
+        function changeData(id){
+            oid=id;
             var cGetRow=window.event.srcElement.parentElement.parentElement.rowIndex;
             //得到某一行
             var oldTr=table1.rows[cGetRow];
@@ -85,6 +82,11 @@
         }
 
 
+        /**
+         * 序列化表单
+         * @param formArray
+         * @returns {string}
+         */
         function arrayToJsonString(formArray){
             var dataArray = {};
             $.each(formArray,function(){
@@ -138,96 +140,88 @@
                                         <td nowrap align="center">计量单位</td>
                                         <td nowrap align="center">状态</td>
                                     </tr>
-                                    <tr align=center th:each="material, materialsStat : ${materials}">
-                                        <td ><input type="radio" name="p_orderno"  value="" onClick="changeData();"></td>
-                                        <td th:text="${materialsStat.index+1}"></td>
+                                    <tr class="T2" align=center th:each="material, materialsStatu : ${materials}">
+                                        <td ><input type="radio" th:value="${material.id}" name="id" onClick="changeData(this.value);"></td>
+                                        <td th:text="${materialsStatu.index+1}"></td>
                                         <td th:text="${material.materialNum}"></td>
                                         <td th:text="${material.materialName}"></td>
                                         <td th:text="${material.materialUnit}"></td>
-                                        <td th:id="${material.materialNum}">未完成</td>
+                                        <td th:id="${material.materialNum}" name="status">未完成</td>
                                     </tr>
-
                                 </form></center></table></td></tr></table>
+        </div>
+        <TABLE style="LINE-HEIGHT: 30px" cellSpacing=1 cellPadding=0     width="80%"  bgColor=#336699 borderColorLight=#006699 border=0>
+            <tr>
+                <td>
+                    <form id="orders" method="post">
+                        <table cellpadding="3" cellspacing="1" border="0" width="100%" id="table2">
+                            <tr class="t1">
+                                <td>物资编码</td>
+                                <td id="no" >W64001005000</td>
+                                <input type="hidden" id="materialCode" name="materialCode" value="W64001005000">
+                            </tr>
+                            <tr class="t1">
+                                <td >物资名称</td>
 
+                                <td>
+                                    晶振(HC-49U-500K-0.005%)
+                                </td>
+                                <input type="hidden" id="materialName" name="materialName" value="晶振(HC-49U-500K-0.005%)">
+                            </tr>
 
-        </div></form>
-    </div>
-    <TABLE style="LINE-HEIGHT: 30px" cellSpacing=1 cellPadding=0     width="80%"  bgColor=#336699 borderColorLight=#006699 border=0>
-        <tr>
-            <td>
-                <form id="orders" method="post">
-                <table cellpadding="3" cellspacing="1" border="0" width="100%" id="table2">
-                    <tr class="t1">
-                        <td>物资编码</td>
-                        <td id="no" >W64001005000</td>
-                        <input type="hidden" id="materialCode" name="materialCode" value="W64001005000">
-                    </tr>
-                    <tr class="t1">
-                        <td >物资名称</td>
+                            <tr class="t1">
+                                <td >数量</td>
 
-                        <td id="materialName">
-                            晶振(HC-49U-500K-0.005%)
-                            <input type="hidden" name="materialName" value="晶振(HC-49U-500K-0.005%)">
+                                <td>
+                                    <input type="text" name="amount" size="20" maxlength="20" value="1"  onKeyPress="check_num_dot()" Chk=2 alt="请输入数量。" onBlur="iszero(this.value,form.amount)">
+                                    <font color=red>*</font>
+                                </td>
+                            </tr>
+                            <tr class="t1">
+                                <td >计量单位</td>
 
-                        </td>
+                                <td>
+                                    个
+                                    <input type="hidden" name="measureUnit" value="个">
+                                </td>
+                            </tr>
+                            <tr class="t1">
+                                <td >预单价(元)</td>
 
-                    </tr>
+                                <td>
+                                    <input type="text" name="unitPrice" unitPrice size="20" maxlength="20" value="5" id="price">
+                                </td>
+                            </tr>
+                            <tr class="t1">
+                                <td >交货期</td>
 
-                    <tr class="t1">
-                        <td >数量</td>
+                                <td>
+                                    <input type="text" name="startDate"  size="20" value="2010/01/09" id="p_date1">
 
-                        <td>
-                            <input type="text" name="amount" size="20" maxlength="20" value="1"  onKeyPress="check_num_dot()" Chk=2 alt="请输入数量。" onBlur="iszero(this.value,form.amount)">
-                            <font color=red>*</font>
-                        </td>
-                    </tr>
-                    <tr class="t1">
-                        <td >计量单位</td>
+                                    <font color=red>*</font>
+                                </td>
+                            </tr>
 
-                        <td>
-                            个
-                            <input type="hidden" name="p_input12" value="个">
-                        </td>
-                    </tr>
-                    <tr class="t1">
-                        <td >预单价(元)</td>
+                            <tr class="t1">
+                                <td >备注</td>
 
-                        <td>
-                            <input type="text" name="unitPrice" unitPrice size="20" maxlength="20" value="5" id="price">
-                        </td>
-                    </tr>
-                    <tr class="t1">
-                        <td >交货期</td>
+                                <td>
+                                    <textarea name="remark"></textarea>
+                                </td>
+                            </tr>
 
-                        <td>
-                            <input type="text" name="startDate"  size="20" readonly value="2010/01/09" id="p_date1">
+                            <tr class="t1">
+                                <td colspan=2>
+                                    <font color=red><B>
+                                        附件上传说明：文件大小不能超过4M。
+                                    </B></font>
+                                </td>
+                            </tr>
 
-                            <font color=red>*</font>
-                        </td>
-                    </tr>
-
-                    <tr class="t1">
-                        <td >备注</td>
-
-                        <td>
-                            <textarea name="remark"></textarea>
-
-                        </td>
-                    </tr>
-
-                    <tr class="t1">
-                        <td colspan=2>
-                            <font color=red><B>
-                                附件上传说明：文件大小不能超过4M。
-                            </B></font>
-                        </td>
-                    </tr>
-
-                </table></form></td></tr></table>
-
+                        </table></form></td></td></tr></table>
+    </form>
     <br>
-
-    <input type="button" value="重新选择物资" onClick="window.document.location='pclass_select.html'">
+    <input type="button" value="重新选择物资" onClick="window.document.location='pclass_select'">
 
     <input type="button" value="保存" onClick="javascript:submit_form1();">
 
@@ -236,7 +230,6 @@
 <input type="hidden" name="p_ordercode" value="1000201011133304">
 <input type="hidden" name="p_orderno" value="1000201011133304">
 <input type="hidden" name="p_type" value="">
-
 <input type="hidden" name="p_ftype" value="2">
 </form>
 </body>

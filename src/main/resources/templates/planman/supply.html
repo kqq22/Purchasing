@@ -1,4 +1,8 @@
-
+<html>
+<link rel="stylesheet" href="css/style.css">
+<head>
+	<title>临时供应商注册</title>
+</head>
 <SCRIPT LANGUAGE="JAVASCRIPT">
 	function chck()
 	{  var  count=0;
@@ -214,12 +218,6 @@
 		window.open(page,"newuser","toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=700,height=400,left=100,top=150");
 	}
 </SCRIPT>
-
-
-<html>
-<link rel="stylesheet" href="css/style.css">
-<head>
-	<title>临时供应商注册</title>
 	<script language=javascript>
 		function subback()
 		{
@@ -228,10 +226,10 @@
 			CheckAll();
 		}
 	</script>
-</head>
+
 <body>
 <center>
-	<form name=form action="supply2.html"  method="post">
+	<form name=form action="/addSupplier"  method="post">
 		<input type="hidden" name="p_Enquireno" value="100020101348014">
 		<input type=hidden name=but value="ture">
 
@@ -240,78 +238,49 @@
 				<td>
 					<table cellpadding="3" cellspacing="1" border="0" width="100%">
 						<tr bgcolor="#ffffff">
-							<td width="100%" colspan="20" bgcolor="#ffffff" align=center height=22><B><H2><font  color=#0070C0 >临时供应商注册</td>
+							<td width="100%" colspan="20" bgcolor="#ffffff" align=center height=22><B><H2><font  color=#0070C0 >临时供应商注册</font></H2></B></td>
 						</tr>
 
 						<tr>
-							<td class=t1 nowrap >供应商名称</td><td class=t2><INPUT maxLength=50 name="strCorpName" style="HEIGHT: 22px; WIDTH: 161px"  Chk=1 alt="请输入供应商名称！" >**</td>
+							<td class=t1 nowrap >供应商名称</td><td class=t2><INPUT maxLength=50 name="company" style="HEIGHT: 22px; WIDTH: 161px"  Chk=1 alt="请输入供应商名称！" >**</td>
 							<td class=t1 nowrap>供应商简称</td><td class=t2><input name="strShortName" style="HEIGHT: 22px; WIDTH: 161px"  Chk=1 alt="请输入供应商简称！">**</td>
 						</tr>
 						<tr>
-							<td class=t1 nowrap>法人代表</td><td class=t2><INPUT maxLength=10 name="strManager" style="HEIGHT: 22px; WIDTH: 161px" Chk=1 alt="请输入法人代表！">**</td>
-							<td class=t1 nowrap>供应商证书编号</td><td class=t2><INPUT maxLength=50 name="strCert" style="HEIGHT: 22px; WIDTH: 161px"></td>
+							<td class=t1 nowrap>法人代表</td><td class=t2><INPUT maxLength=10 name="corporation" style="HEIGHT: 22px; WIDTH: 161px" Chk=1 alt="请输入法人代表！">**</td>
+							<td class=t1 nowrap>供应商证书编号</td><td class=t2><INPUT maxLength=50 name="certificate" style="HEIGHT: 22px; WIDTH: 161px"></td>
 						</tr>
 						<tr>
-							<td class=t1 nowrap>地&nbsp;&nbsp;&nbsp;&nbsp;址</td><td class=t2><input maxLength="50" name="strAddr" style="HEIGHT: 22px; WIDTH: 161px"  Chk=1 alt="请输入地址！" >**</td>
-							<td class=t1 nowrap>邮&nbsp;&nbsp;&nbsp;&nbsp;编</td><td class=t2><input maxLength="6" name="strZip" style="HEIGHT: 22px; WIDTH: 161px"></td>
+							<td class=t1 nowrap>地&nbsp;&nbsp;&nbsp;&nbsp;址</td><td class=t2><input maxLength="50" name="address" style="HEIGHT: 22px; WIDTH: 161px"  Chk=1 alt="请输入地址！" >**</td>
+							<td class=t1 nowrap>邮&nbsp;&nbsp;&nbsp;&nbsp;编</td><td class=t2><input maxLength="6" name="zip" style="HEIGHT: 22px; WIDTH: 161px"></td>
 						</tr>
 						<tr>
 							<td class=t1 nowrap>注册资金</td><td class=t2><input maxLength="10" name="strFinancing"  style="HEIGHT: 22px; WIDTH: 161px">(元)</td>
-							<td class=t1 nowrap>联&nbsp;系&nbsp;人</td><td class=t2><input maxLength="10" name="strContact" style="HEIGHT: 22px; WIDTH: 161px"></td>
+							<td class=t1 nowrap>联&nbsp;系&nbsp;人</td><td class=t2><input maxLength="10" name="contact" style="HEIGHT: 22px; WIDTH: 161px"></td>
 						</tr>
 						<tr>
-							<td class=t1 nowrap>电&nbsp;&nbsp;&nbsp;&nbsp;话</td><td class=t2><input maxLength="15" name="strTel" style="HEIGHT: 22px; WIDTH: 161px" ></td>
-							<td class=t1 nowrap>传&nbsp;&nbsp;&nbsp;&nbsp;真</td><td class=t2><input maxLength="15" name="strFax" style="HEIGHT: 22px; WIDTH: 161px" ></td>
+							<td class=t1 nowrap>电&nbsp;&nbsp;&nbsp;&nbsp;话</td><td class=t2><input maxLength="15" name="phone" style="HEIGHT: 22px; WIDTH: 161px" ></td>
+							<td class=t1 nowrap>传&nbsp;&nbsp;&nbsp;&nbsp;真</td><td class=t2><input maxLength="15" name="fax" style="HEIGHT: 22px; WIDTH: 161px" ></td>
 						</tr>
 						<tr>
-							<td class=t1 nowrap>电子邮箱</td><td class=t2><input maxLength="40" name="strEmail" style="HEIGHT: 22px; WIDTH: 161px" ></td>
-							<td class=t1 nowrap>网站地址</td><td class=t2><input maxLength="40" name="strUrl" style="HEIGHT: 22px; WIDTH: 161px"></td>
+							<td class=t1 nowrap>电子邮箱</td><td class=t2><input maxLength="40" name="email" style="HEIGHT: 22px; WIDTH: 161px" ></td>
+							<td class=t1 nowrap>网站地址</td><td class=t2><input maxLength="40" name="" style="HEIGHT: 22px; WIDTH: 161px"></td>
 						</tr>
 						<tr>
-							<td class=t1 nowrap>公司性质</td><td class=t2><select name="intCorpChara" style="HEIGHT: 22px; WIDTH: 161px">
+							<td class=t1 nowrap>公司性质</td><td class=t2><select name="kind" style="HEIGHT: 22px; WIDTH: 161px">
 
-							<OPTION value="1">国有企业</OPTION>
+							<OPTION value="G000-1">国有企业</OPTION>
 
-							<OPTION value="2">集体企业</OPTION>
+							<OPTION value="G000-2">集体企业</OPTION>
 
-							<OPTION value="3">股份合作企业</OPTION>
+							<OPTION value="G000-3">股份合作企业</OPTION>
 
-							<OPTION value="4">国有联营企业</OPTION>
+							<OPTION value="G000-4">有限责任公司</OPTION>
 
-							<OPTION value="5">集体联营企业</OPTION>
+							<OPTION value="G000-5">股份有限公司</OPTION>
 
-							<OPTION value="6">国有与集体联营企业</OPTION>
+							<OPTION value="G000-6">私营独资企业</OPTION>
 
-							<OPTION value="7">其他联营企业</OPTION>
-
-							<OPTION value="8">国有独资公司</OPTION>
-
-							<OPTION value="9">有限责任公司</OPTION>
-
-							<OPTION value="10">股份有限公司</OPTION>
-
-							<OPTION value="11">私营独资企业</OPTION>
-
-							<OPTION value="12">私营合伙企业</OPTION>
-
-							<OPTION value="13">私营有限责任公司</OPTION>
-
-							<OPTION value="14">私营股份有限公司</OPTION>
-
-							<OPTION value="15">其他企业</OPTION>
-
-							<OPTION value="16">合资经营企业（港或澳、台资)</OPTION>
-
-							<OPTION value="17">合作经营企业（港或澳、台资)</OPTION>
-
-							<OPTION value="18">港、澳、台商独资经营企业</OPTION>
-
-							<OPTION value="19">港、澳、台商投资股份有限公司</OPTION>
-
-							<OPTION value="20">中外合资经营企业</OPTION>
-
-							<OPTION value="21">中外合作经营企业</OPTION>
-
+							<OPTION value="G000-7">中外合资经营企业</OPTION>
 						</select></td>
 							<td class=t1 nowrap>认证状况</td><td class=t2><input maxLength="30" name="strCertStatus" style="HEIGHT: 22px; WIDTH: 161px"></td>
 						</tr>
@@ -329,7 +298,6 @@
 		<p align=center>
 			<!-- <INPUT type=button value="保存/填写注册信息" onClick="subback()" id=button1 name=button1> -->
 			<INPUT type=button value="保存/填写注册信息" onClick="subback()" id=button1 name=button1>
-			<INPUT type=button value="清 除" onClick="form.reset()" id=button1 name=button1>
 			<INPUT type=reset value="返 回" onClick="history.back()" id=reset1 name=reset1>
 		</P>
 	</form>

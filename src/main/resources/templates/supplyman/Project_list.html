@@ -1,0 +1,125 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<HEAD><TITLE>采购计划一览表</TITLE>
+  <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.8.5/themes/default/easyui.css">
+  <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.8.5/themes/icon.css">
+  <script type="text/javascript" src="../jquery-easyui-1.8.5/jquery.min.js"></script>
+  <script type="text/javascript" src="../jquery-easyui-1.8.5/jquery.easyui.min.js"></script>
+  <script type="text/javascript" src="../jquery-easyui-1.8.5/locale/easyui-lang-zh_CN.js"></script>
+<META http-equiv=Content-Language content=zh-cn>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.5626" name=GENERATOR>
+<META content=FrontPage.Editor.Document name=ProgId><LINK
+            href="Project_list.files/style.css" rel=stylesheet>
+<SCRIPT language=JavaScript src="Project_list.files/pub_Calendar.js"></SCRIPT>
+
+<SCRIPT language=javascript th:inline="none">
+    function select_check(theForm)
+      {
+        var count=0;
+        for (var k = 0; k < theForm.length; k++)
+        if ((theForm[k].type == "checkbox") && (theForm[k].checked))
+        count++;
+         if (count==0)
+         {
+            for (k = 0; k < theForm.length; k++)
+            {
+              if (theForm[k].type == "checkbox")
+              theForm[k].checked=true;
+            }
+         }
+         else
+         {
+            for (k = 0; k < theForm.length; k++)
+            {
+              if (theForm[k].type == "checkbox")
+              theForm[k].checked=false;
+            }
+         }
+      }
+      
+      function submit_Checkform(theForm,i)
+      {
+        var count=0;
+        for (var k = 0; k < theForm.length; k++)
+        if ((theForm[k].type == "checkbox") && (theForm[k].checked))
+        count++;
+        if (count==0)
+        {
+          alert("提示信息：\n请选择采购计划。");
+          return;
+        }
+         document.form.p_type.value=i;
+         window.document.form.submit();
+         return true;
+      }      
+      function submit_form(theForm,i)
+      {
+        var row = $("#tb").datagrid("getSelected");
+      	window.document.location="/findQuoteById?id="+row.id;
+      }
+
+    $(function () {
+        $('#tb').datagrid({
+            url: '/findQuoteAll',
+            method: 'GET',
+            fitColumns: true, //自适应宽度，占满,不能和冻结列同时设置成true
+            striped: true,  //斑马线效果
+            idField: 'sno',  //主键列
+            rownumbers: true,  //显示行号
+            pagination: true,
+            pageList: [2, 4, 6, 8, 10], //每页行数选择列表
+            pageSize: 2, //设置默认初始的每页行数rows
+            pageNumber: 1, //设置默认初始的页码page
+            remoteSort: false, //是否服务器端排序，设成false才可以在页面进行排序
+            //sortName:'sname', //指定列名可以进行排序
+            multiSort: true,
+            singleSelect:true, //true单选
+            columns: [[
+                {field: 'oid',title:'选择',
+                    formatter: function(value, rowData, rowIndex){
+                        return '<input type="radio" name="selectRadio" id="selectRadio"' + rowIndex + '    value="' + rowData.oid + '" />';
+                    }},
+                {field: 'id', title: '序号', width: 100},
+                {field: 'queTitle', title: '报价书标题', width: 190,},
+                {field: 'queDate', title: '报价提交时间', width: 190, align: 'right'},
+                {field: 'enquireName', title: '对应询价书', width: 140, align: 'right',
+                    formatter: function(value,row,index){
+                        return row.enquire.enquireName;
+                    }
+                },
+                {field: 'endDate', title: '询价截止时间', width: 140, align: 'right'},
+                {field: 'stockType', title: '采购类型', width: 140, align: 'right',
+                    formatter: function(value,row,index){
+                        if (row.stock.stockType=="C000-1"){
+                            return "制造中心采购公开求购";
+                        }
+                    }
+                }
+            ]]
+        })
+    });
+</SCRIPT>
+</HEAD>
+<BODY>
+<DIV id=overDiv style="Z-INDEX: 1; POSITION: absolute"></DIV>
+<CENTER>
+<FORM name=form action=Project_list_do.asp method=post><INPUT type=hidden 
+value=1 name=p_type> 
+<H2><FONT color=#0070c0>报价维护</FONT></H2>
+<TABLE cellSpacing=1 cellPadding=0 width="100%" bgColor=#ffffff 
+borderColorLight=#ffffff border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=1 cellPadding=3 width="100%" border=0>
+        <TBODY>
+        <TR bgColor=#ffffff>
+          <TD noWrap align=middle>报价书名称：<INPUT size=10 
+            name=p_title>&nbsp;&nbsp; 对应询价书名称：<INPUT size=10 
+            name=p_Item>&nbsp;&nbsp; <INPUT onclick=submit_form_cx() type=button value=查询></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><FORM 
+name="form1" action="" method="Post">
+<CENTER>
+<table id="tb"></table>
+<INPUT type=hidden value=1 name=p_listtype>
+<P align=center><INPUT onclick=submit_form(document.form,1) type=button value=修改> <INPUT onclick="ret1();" type=button value=删除>
+</P></CENTER></FORM></FORM></CENTER></CENTER></BODY></HTML>

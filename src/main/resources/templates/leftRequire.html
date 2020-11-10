@@ -21,7 +21,7 @@
 			success: function (data) {
 				//遍历data
 				$(data).each(function (index,menu) {
-					if (menu.id==1){//一级目录
+					if (menu.id==1||menu.id==2||menu.id==3||menu.id==4||menu.id==5||menu.id==6||menu.id==7||menu.id==8){//一级目录
 						$("#accordion").accordion('add',
 								{
 									title: menu.text,

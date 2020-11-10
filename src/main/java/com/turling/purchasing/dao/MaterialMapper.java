@@ -13,6 +13,9 @@ public interface MaterialMapper {
     @Select("select count(*) from material")
     public Integer getCount();
 
+    @Select("select id from material where material_Num=#{code}")
+    public long getId(String code);
+
     long countByExample(MaterialExample example);
 
     int deleteByExample(MaterialExample example);

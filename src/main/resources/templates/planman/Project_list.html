@@ -1,0 +1,149 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<HEAD><TITLE>采购计划一览表</TITLE>
+  <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.8.5/themes/default/easyui.css">
+  <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.8.5/themes/icon.css">
+  <script type="text/javascript" src="../jquery-easyui-1.8.5/jquery.min.js"></script>
+  <script type="text/javascript" src="../jquery-easyui-1.8.5/jquery.easyui.min.js"></script>
+  <script type="text/javascript" src="../jquery-easyui-1.8.5/locale/easyui-lang-zh_CN.js"></script>
+<META http-equiv=Content-Language content=zh-cn>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.5626" name=GENERATOR>
+<META content=FrontPage.Editor.Document name=ProgId><LINK 
+href="css/style.css" rel=stylesheet>
+<SCRIPT language=JavaScript src="css/pub_Calendar.js"></SCRIPT>
+
+<SCRIPT language=javascript th:inline="none">
+      function submit_form()
+      {
+        var row = $('#tb').datagrid('getSelected');
+        if(row==null){
+          alert("至少选择一行")
+        }else{
+          location.href="/showStockDetail?id="+row.id;
+        }
+      }
+      function submit_form_cx()
+      {
+        form.action="Project_list.asp";
+        window.document.form.submit();
+      }
+
+      function submit_form1(){
+        var row = $('#tb').datagrid('getSelected');
+        if(row==null){
+          alert("至少选择一行")
+        }else{
+          location.href="/updateStockStatus?id="+row.id;
+        }
+      }
+
+
+      $(function () {
+        $('#tb').datagrid({
+          url: '/findStockAll',
+          method: 'GET',
+          fitColumns: true, //自适应宽度，占满,不能和冻结列同时设置成true
+          striped: true,  //斑马线效果
+          idField: 'sno',  //主键列
+          rownumbers: true,  //显示行号
+          pagination: true,
+          pageList: [2, 4, 6, 8, 10], //每页行数选择列表
+          pageSize: 2, //设置默认初始的每页行数rows
+          pageNumber: 1, //设置默认初始的页码page
+          remoteSort: false, //是否服务器端排序，设成false才可以在页面进行排序
+          //sortName:'sname', //指定列名可以进行排序
+          multiSort: true,
+          singleSelect:true, //true单选
+          columns: [[
+            {field: 'oid',title:'选择',
+              formatter: function(value, rowData, rowIndex){
+                return '<input type="radio" name="selectRadio" id="selectRadio"' + rowIndex + '    value="' + rowData.oid + '" />';
+              }},
+            {field: 'id', title: '序号', width: 100},
+            {field: 'stockName', title: '采购计划名称', width: 190,},
+            {field: 'stockType', title: '采购类型', width: 190, align: 'right',
+              formatter: function(value){
+                if (value=="C000-1"){
+                  return "公开求购";
+                }
+              }
+            },
+            {field: 'status', title: '状态', width: 190, align: 'right',
+              formatter: function(value,row){
+                if (row.idMapping.status=="C001-30"){
+                  return "未确定";
+                } else if(row.idMapping.status=="C001-40"){
+                  return "待审批";
+                }else if(row.idMapping.status=="C001-51"){
+                  return "驳回";
+                }else if(row.idMapping.status=="C001-52"){
+                  return "废弃";
+                }else if (row.idMapping.status=="C001-60"){
+                  return "下达";
+                }else if (row.idMapping.status=="C001-70"){
+                  return "询价书未发出"
+                }else if (row.idMapping.status=="C001-80"){
+                  return "询价书已发出"
+                }else if (row.idMapping.status=="C001-90"){
+                  return "询价已截止"
+                }else if (row.idMapping.status=="C001-100"){
+                  return "已揭示报价"
+                }else if (row.idMapping.status=="C001-110"){
+                  return "合同申请未报批"
+                }else if (row.idMapping.status=="C001-120"){
+                  return "合同申请未审核"
+                }else if (row.idMapping.status=="C001-130"){
+                  return "合同申请计划员已审核"
+                }
+              }
+            },
+            {field: 'submitDate', title: '采购计划下达时间', width: 140, align: 'right'},
+            {field: 'enquireName', title: '对应询价书', width: 140, align: 'right',
+              formatter: function(value,row,index){
+                  return row.enquire.enquireName;
+              }
+            }
+          ]]
+        })
+      });
+</SCRIPT>
+<style type="text/css">
+<!--
+.STYLE1 {color: #FF0000}
+-->
+</style>
+</HEAD>
+<BODY>
+<DIV id=overDiv style="Z-INDEX: 1; POSITION: absolute"></DIV>
+<CENTER>
+<FORM name=form action="xjfatz_xjfamx.htm" method=post>
+<H2><FONT color=#0070c0>采购计划一览表</FONT></H2>
+<TABLE cellSpacing=1 cellPadding=0 width="100%" bgColor=#ffffff 
+borderColorLight=#ffffff border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=1 cellPadding=3 width="100%" border=0>
+        <TBODY>
+        <TR bgColor=#ffffff>
+          <TD noWrap align=middle>采购计划名称：<INPUT size=10 
+            name=p_title>&nbsp;&nbsp; 物资名称：<INPUT size=10
+            name=p_Item>&nbsp;&nbsp; 计划状态：<SELECT style="WIDTH: 115px"
+            name=p_status> <OPTION value="" selected>全部</OPTION> <OPTION
+              value=70>未确定</OPTION> <OPTION value=80>待审</OPTION>
+              <OPTION value=100>驳回</OPTION> <OPTION value=110>下达</OPTION>
+              <OPTION value=120>通过</OPTION> <OPTION value=140>废弃</OPTION>
+              </SELECT>&nbsp;&nbsp; 采购类型：<SELECT
+            style="WIDTH: 80px" name=p_stocktype> <OPTION value=""
+              selected>全部</OPTION> <OPTION value=1>公开求购</OPTION> <OPTION
+              value=2>定向询价</OPTION></SELECT>&nbsp;&nbsp; <INPUT onclick=submit_form_cx() type=button value=查询></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><FORM
+name="form1" action="xjfatz_xjfamx.htm" method="Post">
+<CENTER>
+
+  <table id="tb"></table>
+
+  <INPUT type=hidden value=1 name=p_listtype>
+<P align=center>
+<INPUT onClick="submit_form1()" type=button value=报批>
+<INPUT onclick=submit_form() type=button value=详情> <INPUT onClick=" javascript:history.back()" type=button value=返回>
+</P></CENTER></FORM></FORM></CENTER></CENTER></BODY></HTML>

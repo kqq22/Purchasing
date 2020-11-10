@@ -1,5 +1,16 @@
-
-<SCRIPT LANGUAGE="JAVASCRIPT">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="js/style.css">
+    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.8.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.8.5/themes/icon.css">
+    <script type="text/javascript" src="../jquery-easyui-1.8.5/jquery.min.js"></script>
+    <script type="text/javascript" src="../jquery-easyui-1.8.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../jquery-easyui-1.8.5/locale/easyui-lang-zh_CN.js"></script>
+</HEAD>
+<title>询价书列表</title>
+<SCRIPT LANGUAGE="JAVASCRIPT" th:inline="none">
     function chck()
     {  var  count=0;
         for (var i=0;i<form.length;i++)
@@ -212,17 +223,67 @@
     {
         window.open(page,"newuser","toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=700,height=400,left=100,top=150");
     }
+
+    $(function () {
+        $('#tb').datagrid({
+            url: '/findEnquireAll',
+            method: 'GET',
+            fitColumns: true, //自适应宽度，占满,不能和冻结列同时设置成true
+            striped: true,  //斑马线效果
+            idField: 'sno',  //主键列
+            rownumbers: true,  //显示行号
+            pagination: true,
+            pageList: [2, 4, 6, 8, 10], //每页行数选择列表
+            pageSize: 2, //设置默认初始的每页行数rows
+            pageNumber: 1, //设置默认初始的页码page
+            remoteSort: false, //是否服务器端排序，设成false才可以在页面进行排序
+            //sortName:'sname', //指定列名可以进行排序
+            multiSort: true,
+            singleSelect:true, //true单选
+            columns: [[
+                {field: 'oid',title:'选择',
+                    formatter: function(value, rowData, rowIndex){
+                        return '<input type="radio" name="selectRadio" id="selectRadio"' + rowIndex + '    value="' + rowData.oid + '" />';
+                    }},
+                {field: 'id', title: '序号', width: 100},
+                {field: 'enquireName', title: '询价书标题', width: 190,},
+                {field: 'startDate', title: '询价提交时间', width: 190, align: 'right',
+                    formatter: function(value,row,index){
+                        return row.enquireDetail.startDate;
+                    }
+                },
+                {field: 'endDate', title: '询价截止时间', width: 140, align: 'right',
+                    formatter: function(value,row,index){
+                        return row.endDate;
+                    }
+                },
+                {field: 'status', title: '询价书状态', width: 140, align: 'right',
+                    formatter: function(value,row,index){
+                        if (row.idMapping.status=="C001-70"){
+                            return "未发布";
+                        }else if (row.idMapping.status=="C001-80"){
+                            return "已发布"
+                        }else if(row.idMapping.status=="C001-90"){
+                            return "已截止"
+                        }else if(row.idMapping.status=="C001-100"){
+                            return "已揭示"
+                        }
+                    }
+                },
+                {field: 'stockType', title: '采购类型', width: 140, align: 'right',
+                    formatter: function(value,row,index){
+                        if (row.stock.stockType=="C000-1"){
+                            return "制造中心采购公开求购";
+                        }
+                    }
+                }
+            ]]
+        })
+    });
 </SCRIPT>
 
 
-<html>
-<head>
-    <meta http-equiv="Content-Language" content="zh-cn">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <link rel="stylesheet" href="js/style.css">
-</HEAD>
-<title>询价书列表</title>
 <BODY>
 <form name=form >
     <input type="hidden" name="p_opert" value="3">
@@ -258,68 +319,8 @@
                             </tr>
                         </table>
                     </td></tr>
-
-                    <tr  class="t1" >
-                        <td align=center>选择</td>
-                        <td align=center>序号</td>
-                        <td align=center>询价书标题</td>
-                        <td align=center>询价提交时间</td>
-                        <td align=center>询价截止时间</td>
-                        <td align=center>询价书状态</td>
-                        <td align=center>采购类型</td>
-                    </tr>
-
-                    <tr class="t2">
-                        <td align=center><input type="radio"  onBlur="" name="Quoteno" value="47792010146998" onClick="app(false)"></td>
-                        <td align=center>1</td>
-                        <td ><B><A Href="Enquire_xjsmx.htm"><font color=blue>20020055100109</font></A></b></td>
-                        <td  align=center>2010/01/09 10:32:46<br></td>
-                        <td  align=center>2010/01/10 00:00<br></td>
-                        <td align=center>未发布<br></td>
-                        <td align=center>制造中心采购公开求购</td>
-                    </tr>
-
-                    <tr class="t2">
-                        <td align=center><input type="radio"  onBlur="" name="Quoteno" value="47792010146998" onClick="app(false)"></td>
-                        <td align=center>1</td>
-                        <td ><B><A Href="Enquire_xjsmx.htm"><font color=blue>20020055100109</font></A></b></td>
-                        <td  align=center>2010/01/09 10:32:46<br></td>
-                        <td  align=center>2010/01/10 00:00<br></td>
-                        <td align=center>已截止<br></td>
-                        <td align=center>制造中心采购公开求购</td>
-                    </tr>
-
-
-                    <tr class="t2">
-                        <td align=center><input type="radio"  onBlur="" name="Quoteno" value="47792010146998" onClick="app(true)"></td>
-                        <td align=center>1</td>
-                        <td ><B><A Href="Enquire_xjsmx.htm"><font color=blue>20020055100109</font></A></b></td>
-                        <td  align=center>2010/01/09 10:32:46<br></td>
-                        <td  align=center>2010/01/10 00:00<br></td>
-                        <td align=center>未揭示<br></td>
-                        <td align=center>制造中心采购公开求购</td>
-                    </tr>
-                    <tr class="t2">
-                        <td align=center><input type="radio" name="Quoteno" value="47792010146998" onClick="app(true)"></td>
-                        <td align=center>2</td>
-                        <td ><B><A Href="Enquire_xjsmx.htm"><font color=blue>20020055100109</font></A></b></td>
-                        <td  align=center>2010/01/09 10:32:46<br></td>
-                        <td  align=center>2010/01/10 00:00<br></td>
-                        <td align=center>已揭示<br></td>
-                        <td align=center>制造中心采购公开求购</td>
-                    </tr>
-                    <TR>
-                        <TD align=middle width="100%" bgColor=#ffffff colSpan=9
-                            height=22><FORM #000064?
-                                            action="Apply_list.asp name=form><font color="
-                                            method="Post">◆&nbsp;</FONT><FONT color=#000064>首页
-                            上一页</FONT>&nbsp;<FONT color=#000064>下一页 尾页</FONT><FONT
-                                color=#000064>&nbsp;共 1 个合同申请 10 个合同申请 /页</FONT><FONT
-                                color=#000064>&nbsp;页次:<FONT color=blue>1</FONT>/1页</FONT><FONT
-                                color=#000064>&nbsp;◆&nbsp;</FONT> </FORM></TD></TR>
-
                 </table></td></tr></table>
-
+    <table id="tb"></table>
     </center>
 </form>
 <P Align=center>
@@ -341,19 +342,9 @@
 
 
     function update_quote()
-    { var count=0;
-        for (var k = 0; k < form.length; k++)
-            if ((form[k].type == "radio") && (form[k].checked))
-                count++;
-        if (count==0)
-        {
-            alert("提示信息：\n请选择报价书。\n你只能修改未发布的询价书");
-            return;
-        }
-        else
-        { form.action="Enquire_update.htm";
-            form.submit();
-        }
+    {
+        var row = $("#tb").datagrid("getSelected");
+        location.href="/findEnquireById?id="+row.id;
     }
     function delete_quote()
     {  var count=0;

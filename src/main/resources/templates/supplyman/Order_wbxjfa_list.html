@@ -1,6 +1,15 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
-<HTML><HEAD><TITLE>未通过的采购计划</TITLE>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<HEAD><TITLE>询价书报价</TITLE>
+  <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.8.5/themes/default/easyui.css">
+  <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.8.5/themes/icon.css">
+  <script type="text/javascript" src="../jquery-easyui-1.8.5/jquery.min.js"></script>
+  <script type="text/javascript" src="../jquery-easyui-1.8.5/jquery.easyui.min.js"></script>
+  <script type="text/javascript" src="../jquery-easyui-1.8.5/locale/easyui-lang-zh_CN.js"></script>
+  <META http-equiv=Content-Language content=zh-cn>
+  <META http-equiv=Content-Type content="text/html; charset=UTF-8">
+  <META content="MSHTML 6.00.2900.5626" name=GENERATOR>
+  <META content=FrontPage.Editor.Document name=ProgId><LINK
+          href="../../static/css/style.css" rel=stylesheet>
 <SCRIPT language=JAVASCRIPT>
 function chck()
 {  var  count=0;
@@ -216,12 +225,7 @@ function check_num_dot()
  }
 </SCRIPT>
 
-<META http-equiv=Content-Language content=zh-cn>
-<META http-equiv=Content-Type content="text/html; charset=UTF-8">
-<META content="MSHTML 6.00.2900.5626" name=GENERATOR>
-<META content=FrontPage.Editor.Document name=ProgId><LINK
-            href="../../static/css/style.css" rel=stylesheet>
-<SCRIPT language=javascript>
+<SCRIPT language=javascript th:inline="none">
 		 function req()
       {
       	window.document.location="test.html";
@@ -294,12 +298,70 @@ function check_num_dot()
         form.action="Order_wbxjfa_list.asp";
         window.document.form.submit();
       }
+
+      function addQuote(){
+		   var row = $("#tb").datagrid("getSelected");
+		   location.href="/findEnquireToQuote?id="+row.id;
+      }
+
+         $(function () {
+           $('#tb').datagrid({
+             url: '/findEnquireAll',
+             method: 'GET',
+             fitColumns: true, //自适应宽度，占满,不能和冻结列同时设置成true
+             striped: true,  //斑马线效果
+             idField: 'sno',  //主键列
+             rownumbers: true,  //显示行号
+             pagination: true,
+             pageList: [2, 4, 6, 8, 10], //每页行数选择列表
+             pageSize: 2, //设置默认初始的每页行数rows
+             pageNumber: 1, //设置默认初始的页码page
+             remoteSort: false, //是否服务器端排序，设成false才可以在页面进行排序
+             //sortName:'sname', //指定列名可以进行排序
+             multiSort: true,
+             singleSelect:true, //true单选
+             columns: [[
+               {field: 'oid',title:'选择',
+                 formatter: function(value, rowData, rowIndex){
+                   return '<input type="radio" name="selectRadio" id="selectRadio"' + rowIndex + '    value="' + rowData.oid + '" />';
+                 }},
+               {field: 'id', title: '序号', width: 100},
+               {field: 'enquireNum', title: '询价书编号', width: 190,},
+               {field: 'enquireName', title: '询价书名称', width: 190, align: 'right'},
+               {field: 'endDate', title: '询价截止时间', width: 140, align: 'right',
+                 formatter: function(value,row,index){
+                   return row.endDate;
+                 }
+               },
+               {field: 'status', title: '询价书状态', width: 140, align: 'right',
+                 formatter: function(value,row,index){
+                   if (row.idMapping.status=="C001-70"){
+                     return "未发布";
+                   }else if (row.idMapping.status=="C001-80"){
+                     return "已发布"
+                   }else if(row.idMapping.status=="C001-90"){
+                     return "已截止"
+                   }else if(row.idMapping.status=="C001-100"){
+                     return "已揭示"
+                   }
+                 }
+               },
+               {field: 'stockType', title: '采购类型', width: 140, align: 'right',
+                 formatter: function(value,row,index){
+                   if (row.stock.stockType=="C000-1"){
+                     return "制造中心采购公开求购";
+                   }
+                 }
+               }
+             ]]
+           })
+         });
 </SCRIPT>
 </HEAD>
 <BODY>
 <CENTER>
 <FORM name=form action="" method=post>
-<H2><FONT color=#0070c0>未通过的采购计划</FONT></H2>
+<H2><FONT color=#0070c0>询价书报价</FONT></H2>
 <TABLE cellSpacing=1 cellPadding=0 width="100%" bgColor=#ffffff
 borderColorLight=#ffffff border=0>
   <TBODY>
@@ -308,8 +370,8 @@ borderColorLight=#ffffff border=0>
       <TABLE cellSpacing=1 cellPadding=3 width="100%" border=0>
         <TBODY>
         <TR>
-          <TD noWrap align=middle>物资编码：<INPUT maxLength=15 size=15
-            name=p_prodno>&nbsp;&nbsp; 物资名称：<INPUT maxLength=15 size=15
+          <TD noWrap align=middle>询价书编号：<INPUT maxLength=15 size=15
+            name=p_prodno>&nbsp;&nbsp; 询价书名称：<INPUT maxLength=15 size=15
             name=p_prodname>&nbsp;&nbsp; 每页显示个数： <SELECT name=p_pagesize>
               <OPTION value=10 selected>10</OPTION> <OPTION value=20>20</OPTION>
               <OPTION value=30>30</OPTION> <OPTION value=50>50</OPTION> <OPTION
@@ -320,77 +382,8 @@ borderColorLight=#ffffff border=0>
                <OPTION
             value=2>废弃</OPTION></SELECT> <INPUT id=button2 onclick=submit_form_cx() type=button value=查询 name=button2></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><FORM
 name="form1" action="" method="Post">
-<CENTER><FONT color=#000064>◆&nbsp;</FONT><FONT color=#000064>首页
-上一页</FONT>&nbsp;<A
-href="http://169.254.158.100/zzdl/Order/Order_Wbxjfa_List.asp?p_type=0&amp;p_prodno=&amp;p_pagesize=&amp;p_ftype=&amp;p_orderby=&amp;page=2"><FONT
-color=#0000be>下一页</FONT></A>&nbsp;<A
-href="http://169.254.158.100/zzdl/Order/Order_Wbxjfa_List.asp?p_type=0&amp;p_prodno=&amp;p_pagesize=&amp;p_ftype=&amp;p_orderby=&amp;page=4"><FONT
-color=#0000be>尾页</FONT></A><FONT color=#000064>&nbsp;共 35 个需求计划 每页10
-个需求计划</FONT><FONT color=#000064>&nbsp;页次:<FONT
-color=blue>1</FONT>/4页</FONT><FONT color=#000064>&nbsp;◆&nbsp;</FONT>
-<TABLE style="LINE-HEIGHT: 30px" cellSpacing=1 cellPadding=0 width="100%"
-bgColor=#336699 borderColorLight=#006699 border=0>
-  <TBODY>
-  <TR>
-    <TD>
-      <TABLE cellSpacing=1 cellPadding=3 width="100%" border=0>
-        <TBODY>
-        <TR class=t1>
-          <TD noWrap align=middle>选择</TD>
-          <TD noWrap align=middle>序号</TD>
-          <TD noWrap align=middle>物资代码</TD>
-          <TD noWrap align=middle>物资名称</TD>
-		   <TD noWrap align=middle>需求计划号</TD>
-          <TD noWrap align=middle>数量</TD>
-          <TD noWrap align=middle>审批人</TD>
-         <TD noWrap align=middle>审批状态</TD>
-
-		</TR>
-        <TR class=t2>
-          <TD align=middle><INPUT type=checkbox value=1000201011133245
-            name=p_orderno></TD>
-          <TD align=middle>1</TD>
-          <TD align=middle>W64001005000<BR></TD>
-          <TD>晶振(HC-49U-500K-0.005%)<BR></TD>
-		  <TD>111111<BR></TD>
-          <TD align=right>22<BR></TD>
-			<TD align=right>计划部长<BR></TD>
-          <TD align=right>废弃<BR></TD>
-        <TR class=t2>
-          <TD align=middle><INPUT type=checkbox value=1000201011133190
-            name=p_orderno></TD>
-          <TD align=middle>2</TD>
-          <TD align=middle>W64001005000<BR></TD>
-          <TD>晶振(HC-49U-500K-0.005%)<BR></TD>
-		   <TD>111111<BR></TD>
-          <TD align=right>1<BR></TD>
-          <TD align=right>计划部长<BR></TD>
-          <TD align=right>驳回<BR></TD>
-
-          </TR>
-        <TR class=t2>
-          <TD align=middle><INPUT type=checkbox value=1000201011133221
-            name=p_orderno></TD>
-          <TD align=middle>3</TD>
-          <TD align=middle>W64001005000<BR></TD>
-          <TD>晶振(HC-49U-500K-0.005%)<BR></TD>
-		   <TD>4353463<BR></TD>
-          <TD align=right>10<BR></TD>
-        <TD align=right>财务<BR></TD>
-         <TD align=right>废弃<BR></TD>
-          </TR>
-        <TR class=t2>
-          <TD align=middle><INPUT type=checkbox value=1000201011133199
-            name=p_orderno></TD>
-          <TD align=middle>10</TD>
-          <TD align=middle>W65000400101<BR></TD>
-          <TD>CMOS电路(CD4001BCN)<BR></TD>
-		   <TD>5436456<BR></TD>
-          <TD align=right>10086<BR></TD>
-           <TD align=right>财务<BR></TD>
-          <TD align=right>驳回<BR></TD>
-          </TR></TBODY></TABLE></TD></TR></TBODY></TABLE><INPUT type=hidden value=0
-name=p_type>
-<P align=center><INPUT onclick=select_check(document.form) type=button value=全选/取消>
-<INPUT onclick="req();" type=button value=详情 name=upd>
+<CENTER>
+  <table id="tb"></table>
+<INPUT type=hidden value=0 name=p_type>
+<P align=center><INPUT type=button value="添加报价" onclick="addQuote()">
 </P></CENTER></FORM></FORM></CENTER></CENTER></BODY></HTML>

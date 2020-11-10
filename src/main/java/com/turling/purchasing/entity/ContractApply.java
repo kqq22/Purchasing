@@ -1,5 +1,7 @@
 package com.turling.purchasing.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -41,9 +43,60 @@ public class ContractApply implements Serializable {
 
     private String leadOpinion;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date leadDate;
 
+    private Stock stock;
+
+    private IdMapping idMapping;
+
+    private Quote quote;
+
+    private Enquire enquire;
+
+    private QuoteDetail quoteDetail;
+
     private static final long serialVersionUID = 1L;
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
+    }
+
+    public IdMapping getIdMapping() {
+        return idMapping;
+    }
+
+    public void setIdMapping(IdMapping idMapping) {
+        this.idMapping = idMapping;
+    }
+
+    public Quote getQuote() {
+        return quote;
+    }
+
+    public void setQuote(Quote quote) {
+        this.quote = quote;
+    }
+
+    public Enquire getEnquire() {
+        return enquire;
+    }
+
+    public void setEnquire(Enquire enquire) {
+        this.enquire = enquire;
+    }
+
+    public QuoteDetail getQuoteDetail() {
+        return quoteDetail;
+    }
+
+    public void setQuoteDetail(QuoteDetail quoteDetail) {
+        this.quoteDetail = quoteDetail;
+    }
 
     public Long getId() {
         return id;

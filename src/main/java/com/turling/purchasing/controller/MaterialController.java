@@ -14,6 +14,13 @@ import java.util.List;
 public class MaterialController {
     @Autowired
     private MaterialService materialService;
+
+    /**
+     * 分页查询物资信息
+     * @param curPage
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/findMaterialAll")
     @ResponseBody
     public EasyUIDataGrid findMaterialAll(@RequestParam(name = "page",defaultValue = "1") Integer curPage,
@@ -21,6 +28,12 @@ public class MaterialController {
         return materialService.findMaterialAll((curPage-1)*pageSize,pageSize);
     }
 
+    /**
+     * 根据选中物资id查询
+     * @param ids
+     * @param m
+     * @return
+     */
     @RequestMapping("/findMaterial")
     public String  findMaterial(@RequestParam("ids") int [] ids, Model m){
         List<Material> materials = new ArrayList<>();
@@ -31,7 +44,7 @@ public class MaterialController {
         }
         //将数据存入Model
         m.addAttribute("materials",materials);
-        return  "planman/test";
+        return  "planman/Order_newform";
     }
 
 }

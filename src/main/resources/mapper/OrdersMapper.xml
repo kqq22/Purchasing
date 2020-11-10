@@ -20,7 +20,59 @@
     <result column="FAX" jdbcType="VARCHAR" property="fax" />
     <result column="EMAIL" jdbcType="VARCHAR" property="email" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+
+    <association property="idMapping" javaType="com.turling.purchasing.entity.IdMapping">
+      <result column="ORDER_ID" property="orderId" jdbcType="BIGINT" />
+      <result column="STOCK_ID" property="stockId" jdbcType="BIGINT" />
+      <result column="ENQUIRE_ID" property="enquireId" jdbcType="BIGINT" />
+      <result column="CONT_APP_ID" property="contAppId" jdbcType="BIGINT" />
+      <result column="QUOTE_ID" property="quoteId" jdbcType="BIGINT" />
+      <result column="CONT_ID" property="contId" jdbcType="BIGINT" />
+      <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    </association>
   </resultMap>
+  <resultMap id="ccount" type="java.lang.Integer">
+    <result column="count"/>
+  </resultMap>
+  <select id="selectordersshow" resultMap="BaseResultMap">
+    SELECT o.*,i.* from ORDERS o,ID_MAPPING i
+    where o.ID=i.ORDER_ID
+    <if test="materialCode !=null">
+      and o.MATERIAL_CODE like concat('%',concat( #{materialCode}),'%')
+    </if>
+
+    <if test="materialName !=null">
+      and o.MATERIAL_NAME like concat('%',concat( #{materialName}),'%')
+    </if>
+
+    <if test="status !=null">
+        and i.STATUS = #{status}
+    </if>
+    limit ${curPage},${pageSize}
+  </select>
+
+  <select id="selectOrdersByStatus" resultMap="BaseResultMap">
+    SELECT o.*,i.* from ORDERS o,ID_MAPPING i
+    where o.ID=i.ORDER_ID
+    and i.STATUS = 'C001-20'
+    limit ${curPage},${pageSize}
+  </select>
+
+  <select id="getCountByStatus" resultMap="ccount">
+    SELECT count(*) as count from ORDERS o,ID_MAPPING i
+    where o.ID=i.ORDER_ID
+    and i.STATUS = 'C001-20'
+  </select>
+
+  <select id="findOrdersById"  resultMap="BaseResultMap">
+   select * from orders o,id_mapping i
+    where o.ID=i.ORDER_ID
+    and o.id IN
+    <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+      ${id}
+    </foreach>
+    limit ${curPage},${pageSize}
+  </select>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">

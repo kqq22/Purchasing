@@ -18,7 +18,104 @@
     <result column="LEAD_AGREE" jdbcType="VARCHAR" property="leadAgree" />
     <result column="LEAD_OPINION" jdbcType="VARCHAR" property="leadOpinion" />
     <result column="LEAD_DATE" jdbcType="TIMESTAMP" property="leadDate" />
+
+    <association property="idMapping" javaType="com.turling.purchasing.entity.IdMapping">
+      <result column="ORDER_ID" property="orderId" jdbcType="BIGINT" />
+      <result column="STOCK_ID" property="stockId" jdbcType="BIGINT" />
+      <result column="ENQUIRE_ID" property="enquireId" jdbcType="BIGINT" />
+      <result column="CONT_APP_ID" property="contAppId" jdbcType="BIGINT" />
+      <result column="QUOTE_ID" property="quoteId" jdbcType="BIGINT" />
+      <result column="CONT_ID" property="contId" jdbcType="BIGINT" />
+      <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    </association>
+    <association property="enquire" javaType="com.turling.purchasing.entity.Enquire">
+      <result column="ID" property="id" jdbcType="BIGINT" />
+      <result column="ENQUIRE_NUM" property="enquireNum" jdbcType="VARCHAR" />
+      <result column="ENQUIRE_NAME" property="enquireName" jdbcType="VARCHAR" />
+      <result column="COMPANY" property="company" jdbcType="VARCHAR" />
+      <result column="LINKMAN" property="linkman" jdbcType="VARCHAR" />
+      <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+      <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+      <result column="FAX" property="fax" jdbcType="VARCHAR" />
+      <result column="ZIP" property="zip" jdbcType="VARCHAR" />
+      <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+      <result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+      <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    </association>
+
+    <association property="orders" javaType="com.turling.purchasing.entity.Orders">
+      <id column="ID" jdbcType="BIGINT" property="id" />
+      <result column="ORDER_NUM" jdbcType="VARCHAR" property="orderNum" />
+      <result column="ORDER_SOURCE" jdbcType="VARCHAR" property="orderSource" />
+      <result column="MATERIAL_CODE" jdbcType="VARCHAR" property="materialCode" />
+      <result column="MATERIAL_NAME" jdbcType="VARCHAR" property="materialName" />
+      <result column="AMOUNT" jdbcType="VARCHAR" property="amount" />
+      <result column="MEASURE_UNIT" jdbcType="VARCHAR" property="measureUnit" />
+      <result column="UNIT_PRICE" jdbcType="DECIMAL" property="unitPrice" />
+      <result column="SUM_PRICE" jdbcType="DECIMAL" property="sumPrice" />
+      <result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+      <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+      <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+      <result column="AUTHOR_ID" jdbcType="VARCHAR" property="authorId" />
+      <result column="AUTHOR" jdbcType="VARCHAR" property="author" />
+      <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+      <result column="FAX" jdbcType="VARCHAR" property="fax" />
+      <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+      <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    </association>
   </resultMap>
+  <resultMap id="ccount" type="java.lang.Integer">
+    <result column="count"/>
+  </resultMap>
+
+  <select id="selectstockshow" resultMap="BaseResultMap">
+    SELECT s.*,i.*,e.* from stock s
+    LEFT JOIN id_mapping i ON s.id=i.stock_id
+    LEFT JOIN enquire e ON e.id = i.enquire_id
+    limit ${curPage},${pageSize}
+  </select>
+
+  <select id="selectStockByStatus" resultMap="BaseResultMap">
+    SELECT s.*,i.*,e.* from stock s
+    LEFT JOIN id_mapping i ON s.id=i.stock_id
+    LEFT JOIN enquire e ON e.id = i.enquire_id
+    where i.STATUS= 'C001-40'
+    limit ${curPage},${pageSize}
+  </select>
+
+  <select id="selectStockByStatus3" resultMap="BaseResultMap">
+    SELECT s.*,i.* from stock s
+    LEFT JOIN id_mapping i ON s.id=i.stock_id
+    where i.STATUS = 'C001-50'
+    limit ${curPage},${pageSize}
+  </select>
+
+  <select id="getCountByStatus3" resultMap="ccount">
+    SELECT count(*) count from stock s
+    LEFT JOIN id_mapping i ON s.id=i.stock_id
+    where i.STATUS = 'C001-50'
+  </select>
+
+  <select id="selectStockByStatus2" resultMap="BaseResultMap">
+    SELECT s.*,i.* from stock s
+    LEFT JOIN id_mapping i ON s.id=i.stock_id
+    where i.STATUS = 'C001-60'
+    limit ${curPage},${pageSize}
+  </select>
+
+  <select id="getCountByStatus" resultMap="ccount">
+    SELECT count(*) as count from STOCK s,ID_MAPPING i
+    where s.ID=i.STOCK_ID
+    and i.STATUS = 'C001-40'
+  </select>
+
+  <select id="selectStockById" resultMap="BaseResultMap">
+    SELECT * from stock s
+    LEFT JOIN id_mapping i ON i.STOCK_ID=s.ID
+    LEFT JOIN orders o ON i.ORDER_ID=o.ID
+    WHERE s.ID=${id}
+  </select>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">

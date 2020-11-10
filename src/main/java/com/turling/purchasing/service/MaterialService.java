@@ -22,4 +22,11 @@ public interface MaterialService {
      * @return
      */
     public Material findMaterialById(Long id);
+
+    /**
+     * 根据物资编码查询物资id
+     * @param code
+     * @return
+     */
+    public Long findMaterialIdByCode(String code);
 }

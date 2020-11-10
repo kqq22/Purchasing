@@ -1,5 +1,7 @@
 package com.turling.purchasing.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,10 +21,13 @@ public class Stock implements Serializable {
 
     private BigDecimal budget;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date submitDate;
 
     private String remark;
@@ -35,7 +40,38 @@ public class Stock implements Serializable {
 
     private String leadOpinion;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date leadDate;
+
+    private IdMapping idMapping;
+
+    private Enquire enquire;
+
+    private Orders orders;
+
+    public Orders getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Orders orders) {
+        this.orders = orders;
+    }
+
+    public Enquire getEnquire() {
+        return enquire;
+    }
+
+    public void setEnquire(Enquire enquire) {
+        this.enquire = enquire;
+    }
+
+    public IdMapping getIdMapping() {
+        return idMapping;
+    }
+
+    public void setIdMapping(IdMapping idMapping) {
+        this.idMapping = idMapping;
+    }
 
     private static final long serialVersionUID = 1L;
 

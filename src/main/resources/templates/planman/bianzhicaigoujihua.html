@@ -1,3 +1,15 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+</head>
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<script type="text/javascript" src="/js/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="/js/jquery.form.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<script Language="JavaScript" src="css/pub_Calendar.js"></script>
+
+<title>编制采购计划</title>
 
 <SCRIPT LANGUAGE="JAVASCRIPT">
     function chck()
@@ -215,15 +227,6 @@
 </SCRIPT>
 
 
-<html>
-<head>
-    <meta http-equiv="Content-Language" content="zh-cn">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="GENERATOR" content="Microsoft FrontPage 4.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <link rel="stylesheet" href="css/style.css">
-    <script Language="JavaScript" src="css/pub_Calendar.js"></script>
-    <title>编制采购计划</title>
     <SCRIPT LANGUAGE=javascript>
         function abc(){
             var ll=document.getElementById("p_cgtype").value;
@@ -240,20 +243,24 @@
         }
         function submit_form(theForm,i)
         {
-            document.form.action="Project_Save.asp";
-            if ((document.form.p_gys_sel.options.length==0)&&
-                (document.form.p_cgtype.value==2||
-                    document.form.p_cgtype.value==4||
-                    document.form.p_cgtype.value==5||
-                    document.form.p_cgtype.value==6||
-                    document.form.p_cgtype.value==7||
-                    document.form.p_cgtype.value==8||
-                    document.form.p_cgtype.value==11))
-            {
-                alert("请选择供应商。");
-                return;
-            }
-            if (form.p_input[5].value.length>400)
+            var id = $("#id").val();
+            var fm = $("#fm").serialize();
+            var stockNum = $("#stockNum").val();
+            //$.param(fm);
+            $.ajax({
+                type : 'POST',
+                datatype : 'text',
+                url : '/addStock?id='+id,
+                data :  fm,
+                success : function (data) {
+                    window.location.href="/Project_list";
+                },
+                error: function(data) {
+                    alert("error:"+data.responseText);
+                }
+            });
+
+        if (form.p_input[5].value.length>400)
             {
                 alert("说明不能超过400字。");
                 return;
@@ -267,8 +274,7 @@
                 document.form.p_gys_sel.options(n).selected=true;
             }
             document.form.p_type.value=i;
-            alert("采购计划编制成功！");
-            window.location.href="Project_list.htm";
+
             //CheckAll();
         }
         function select_cgtype(xyprice_null)
@@ -324,14 +330,14 @@
                 window.location="../Order/Order_wbxjfa_list.asp?p_type=6";
             }
         }
+
     </SCRIPT>
-</head>
 <body>
 <center>
 
     <h2><font color=#0070C0>编制采购计划</font></h2>
 
-    <form name="form" action="Project_Save.asp" method="post">
+    <form id="fm" method="post" enctype="multipart/form-data">
 
         <TABLE style="LINE-HEIGHT: 30px" cellSpacing=1 cellPadding=0     width="100%"  bgColor=#336699 borderColorLight=#006699 border=0>
             <tr>
@@ -342,11 +348,12 @@
                         <tr class="t1">
                             <td>采购计划编号</td>
                             <td>
-                                1000201001251787
-                                <input type="hidden" name="p_input" value="1000201001251787">      	</td>
+                                <input type="text" readonly name="stockNum" id="stockNum" th:value="${stockNum}">
+                            </td>
+                        </td>
                             <td><font color=red>采购计划名称</font></td>
                             <td>
-                                <input type="text" name="p_input" size="20" maxlength="100" value="20020055100109"  Chk=1 alt="请输入采购计划名称。">      </td>
+                                <input type="text" name="stockName" size="20" maxlength="100" value="20020055100109"  Chk=1 alt="请输入采购计划名称。">      </td>
                         </tr>
                         <tr class="t1" >
                             <td>公司名称</td>
@@ -355,14 +362,14 @@
                                 <input type="hidden" name="p_input" value="1000">      	</td>
                             <td>编制人</td>
                             <td>
-                                <input type="text" name="p_input" size="20"  readonly  maxlength="100" value="杨春"  Chk=1 alt="请输入编制人。">       </td>
+                                <input type="text" name="p_input" size="20"  readonly  maxlength="100" th:value="${employee.getEmpName()}"  Chk=1 alt="请输入编制人。">       </td>
                         </tr>
                         <tr class="t1" >
                             <td>预算金额(元)</td>
                             <td>
-                                <input type="text" name="p_input" size="20" maxlength="20" value="84360"  onKeyPress="check_num_dot()" Chk=3>       </td>
+                                <input type="text" name="budget" size="20" maxlength="20" th:value="${sumPrice}"  onKeyPress="check_num_dot()" Chk=3>       </td>
                             <td>采购计划编制时间</td>
-                            <td>2010/01/09</td>
+                            <td th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd')}"></td>
                         </tr>
                     </table></td></tr></table>
 
@@ -390,17 +397,18 @@
                         </tr>
 
                         <tr class="t2" >
+                            <input type="hidden" id="id" name="id" th:value="${orders.getId()}">
                             <td align=center>1</td>
-                            <td >W64001005001<br></td>
-                            <td ><a href="../Project/print_order_detail.asp?p_type=1&p_orderno=1000201011133266&p_ordernum=1" target="_new" >晶振(HC-49U-500M-0.005%)</a><br></td>
-                            <td align=right>222<br></td>
+                            <td th:text="${orders.getMaterialCode()}" align="center"><br></td>
+                            <td th:text="${orders.getMaterialName()}" align="center"><a href="../Project/print_order_detail.asp?p_type=1&p_orderno=1000201011133266&p_ordernum=1" target="_new" ></a><br></td>
+                            <td th:text="${orders.getAmount()}" align="center"><br></td>
 
-                            <td align=center>个<br></td>
-                            <td align=center>2010/01/08<br></td>
+                            <td th:text="${orders.getMeasureUnit()}" align=center>个<br></td>
+                            <td th:text="${#dates.format(orders.getStartDate(),'yyyy-MM-dd')}" align=center><br></td>
 
                             <td nowrap align="center"><a href="Xyprice_list.asp?itemcode=W64001005001"><br></a></td>
 
-                            <td align=right>84360<br></td>
+                            <td th:text="${sumPrice}" align="center"><br></td>
                             <td align=right><br></td>
                             <!--
                             <td align="center"><a href="javascript:openwindown('../Project/Project_Delivery.asp?p_projno=1000201001251787&p_orderno=1000201011133266&p_ordernum=1')"><img src="../images/Open.gif" border="0" WIDTH="18" HEIGHT="12"></a></td>
@@ -417,12 +425,7 @@
                         <tr  class="t1" >
                             <td width=15% align="center"><font color=red>采购方式</font></td>
                             <td colspan=3>
-
-                                <SELECT name="p_cgtype" Chk=1 alt="请选择采购方式。" onChange="abc()">
-                                    <OPTION value="1" >公开求购</OPTION>
-                                    <OPTION value="2" >定向询价</OPTION>
-                                </SELECT>
-
+                                <input type="text" name="p_input" size="20"  readonly  maxlength="100" value="公开求购"  Chk=1 alt="请输入编制人。">
                             </td>
                         </tr>
 
@@ -437,13 +440,9 @@
                                             <th>
                                                 <font color="black">供应商名称</font>		</th>
                                         </tr>
-                                        <tr class="t2">
+                                        <tr class="t2" th:each="supplier,supplierStatu : ${supplierList}">
                                             <td>
-                                                <div align="center">好又多			  </div></td>
-                                        </tr>
-                                        <tr class="t2">
-                                            <td>
-                                                <div align="center">多又好			  </div></td>
+                                                <div align="center" th:text="${supplier.getCompany()}">			  </div></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -482,7 +481,7 @@
                         <tr  class="t1" >
                             <td width=15% align="center" nowrap>说明：<br>（400字以内）</td>
                             <td colspan=3>
-<TEXTAREA NAME="p_input" ROWS=3 COLS=77 style="width:100%">
+<TEXTAREA NAME="remark" ROWS=3 COLS=77 style="width:100%">
 
 </TEXTAREA>
                             </td>
@@ -502,9 +501,7 @@
 
         <br>
         <input type="button" value="确定" onClick="submit_form(document.form,1)">
-        <input type="button" value="重设" onClick="form.reset()">
-
-        <input type="button" value="取消" onClick="window.location='Order_wbxjfa_list.htm'">
+        <input type="button" value="取消" onClick="window.location='/Order_wbxjfa_list'">
 
     </form>
     <form name="form1" action="../Demand/xjfatz_gysxx.asp" method="post"target=_new>

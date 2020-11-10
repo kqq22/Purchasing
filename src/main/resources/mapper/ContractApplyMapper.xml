@@ -21,7 +21,223 @@
     <result column="LEAD_AGREE" jdbcType="VARCHAR" property="leadAgree" />
     <result column="LEAD_OPINION" jdbcType="VARCHAR" property="leadOpinion" />
     <result column="LEAD_DATE" jdbcType="TIMESTAMP" property="leadDate" />
+
+    <association property="stock" javaType="com.turling.purchasing.entity.Stock">
+      <id column="ID" jdbcType="BIGINT" property="id" />
+      <result column="STOCK_NUM" jdbcType="VARCHAR" property="stockNum" />
+      <result column="STOCK_NAME" jdbcType="VARCHAR" property="stockName" />
+      <result column="AUTHOR_ID" jdbcType="VARCHAR" property="authorId" />
+      <result column="AUTHOR" jdbcType="VARCHAR" property="author" />
+      <result column="STOCK_TYPE" jdbcType="VARCHAR" property="stockType" />
+      <result column="BUDGET" jdbcType="DECIMAL" property="budget" />
+      <result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+      <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+      <result column="SUBMIT_DATE" jdbcType="TIMESTAMP" property="submitDate" />
+      <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+      <result column="LEADER_ID" jdbcType="VARCHAR" property="leaderId" />
+      <result column="LEADER" jdbcType="VARCHAR" property="leader" />
+      <result column="LEAD_AGREE" jdbcType="VARCHAR" property="leadAgree" />
+      <result column="LEAD_OPINION" jdbcType="VARCHAR" property="leadOpinion" />
+      <result column="LEAD_DATE" jdbcType="TIMESTAMP" property="leadDate" />
+    </association>
+
+    <association property="idMapping" javaType="com.turling.purchasing.entity.IdMapping">
+      <result column="ORDER_ID" property="orderId" jdbcType="BIGINT" />
+      <result column="STOCK_ID" property="stockId" jdbcType="BIGINT" />
+      <result column="ENQUIRE_ID" property="enquireId" jdbcType="BIGINT" />
+      <result column="CONT_APP_ID" property="contAppId" jdbcType="BIGINT" />
+      <result column="QUOTE_ID" property="quoteId" jdbcType="BIGINT" />
+      <result column="CONT_ID" property="contId" jdbcType="BIGINT" />
+      <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    </association>
+
+    <association property="quote" javaType="com.turling.purchasing.entity.Quote">
+      <id column="ID" jdbcType="BIGINT" property="id" />
+      <result column="QUOTE_NUM" jdbcType="VARCHAR" property="quoteNum" />
+      <result column="ENQUIRE_ID" jdbcType="BIGINT" property="enquireId" />
+      <result column="SUPPLIER_ID" jdbcType="BIGINT" property="supplierId" />
+      <result column="QUO_COMPANY" jdbcType="VARCHAR" property="quoCompany" />
+      <result column="QUO_ADDRESS" jdbcType="VARCHAR" property="quoAddress" />
+      <result column="QUO_LINKMAN" jdbcType="VARCHAR" property="quoLinkman" />
+      <result column="QUO_PHONE" jdbcType="VARCHAR" property="quoPhone" />
+      <result column="QUO_FAX" jdbcType="VARCHAR" property="quoFax" />
+      <result column="QUO_EMAIL" jdbcType="VARCHAR" property="quoEmail" />
+      <result column="QUE_TITLE" jdbcType="VARCHAR" property="queTitle" />
+      <result column="QUE_DATE" jdbcType="TIMESTAMP" property="queDate" />
+      <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+      <result column="SUM_AMOUNT" jdbcType="DECIMAL" property="sumAmount" />
+      <result column="OVERALL_PRICE" jdbcType="DECIMAL" property="overallPrice" />
+      <result column="QUO_REMARK" jdbcType="VARCHAR" property="quoRemark" />
+      <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    </association>
+
+    <association property="enquire" javaType="com.turling.purchasing.entity.Enquire">
+      <id column="ID" jdbcType="BIGINT" property="id" />
+      <result column="ENQUIRE_NUM" jdbcType="VARCHAR" property="enquireNum" />
+      <result column="ENQUIRE_NAME" jdbcType="VARCHAR" property="enquireName" />
+      <result column="COMPANY" jdbcType="VARCHAR" property="company" />
+      <result column="LINKMAN" jdbcType="VARCHAR" property="linkman" />
+      <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+      <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+      <result column="FAX" jdbcType="VARCHAR" property="fax" />
+      <result column="ZIP" jdbcType="VARCHAR" property="zip" />
+      <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+      <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+      <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    </association>
+
+    <association property="quoteDetail" javaType="com.turling.purchasing.entity.QuoteDetail">
+      <id column="ID" jdbcType="BIGINT" property="id" />
+      <result column="QUOTE_ID" jdbcType="BIGINT" property="quoteId" />
+      <result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+      <result column="MATERIAL_CODE" jdbcType="VARCHAR" property="materialCode" />
+      <result column="MATERIAL_NAME" jdbcType="VARCHAR" property="materialName" />
+      <result column="MEASURE_UNIT" jdbcType="VARCHAR" property="measureUnit" />
+      <result column="STANDARD" jdbcType="VARCHAR" property="standard" />
+      <result column="FACTORY" jdbcType="VARCHAR" property="factory" />
+      <result column="PROD_YEAR" jdbcType="VARCHAR" property="prodYear" />
+      <result column="WRAP" jdbcType="VARCHAR" property="wrap" />
+      <result column="AMOUNT" jdbcType="VARCHAR" property="amount" />
+      <result column="UNIT_PRICE" jdbcType="DECIMAL" property="unitPrice" />
+      <result column="SUM_PRICE" jdbcType="DECIMAL" property="sumPrice" />
+      <result column="MIX_PRICE" jdbcType="DECIMAL" property="mixPrice" />
+      <result column="OTHER_PRICE" jdbcType="DECIMAL" property="otherPrice" />
+      <result column="TOTAL_PRICE" jdbcType="DECIMAL" property="totalPrice" />
+      <result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+      <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+    </association>
   </resultMap>
+  <resultMap id="ccount" type="java.lang.Integer">
+    <result column="count"/>
+  </resultMap>
+
+  <select id="selectStock" resultMap="BaseResultMap">
+    SELECT * from stock s
+    LEFT JOIN id_mapping i ON s.id=i.STOCK_ID
+    LEFT JOIN quote q on q.ID=i.QUOTE_ID
+    WHERE q.id=${id}
+  </select>
+
+  <select id="selectContract" resultMap="BaseResultMap">
+    SELECT * from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote q ON i.QUOTE_ID=q.ID
+    LEFT JOIN enquire e ON i.ENQUIRE_ID=e.ID
+    WHERE i.STATUS = 'C001-110'
+    limit ${curPage},${pageSize}
+  </select>
+
+  <select id="getCount" resultMap="ccount">
+    SELECT count(*) count from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote q ON i.QUOTE_ID=q.ID
+    LEFT JOIN enquire e ON i.ENQUIRE_ID=e.ID
+    WHERE i.STATUS = 'C001-110'
+  </select>
+
+  <select id="selectContractByStatus" resultMap="BaseResultMap">
+    SELECT * from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote q ON i.QUOTE_ID=q.ID
+    LEFT JOIN enquire e ON i.ENQUIRE_ID=e.ID
+    limit ${curPage},${pageSize}
+  </select>
+
+  <select id="getCountByStatus" resultMap="ccount">
+    SELECT count(*) count from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote q ON i.QUOTE_ID=q.ID
+    LEFT JOIN enquire e ON i.ENQUIRE_ID=e.ID
+  </select>
+
+  <select id="selectContractByContractStatus" resultMap="BaseResultMap">
+    SELECT * from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote q ON i.QUOTE_ID=q.ID
+    LEFT JOIN stock s ON i.STOCK_ID=s.ID
+    LEFT JOIN enquire e ON i.ENQUIRE_ID=e.ID
+    WHERE i.STATUS = 'C001-120'
+    limit ${curPage},${pageSize}
+
+  </select>
+
+  <select id="getCountByContractStatus" resultMap="ccount">
+    SELECT count(*) count from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote q ON i.QUOTE_ID=q.ID
+    LEFT JOIN stock s ON i.STOCK_ID=s.ID
+    LEFT JOIN enquire e ON i.ENQUIRE_ID=e.ID
+    WHERE i.STATUS = 'C001-120'
+  </select>
+
+  <select id="selectContractById" resultMap="BaseResultMap">
+    SELECT *  from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote_detail q ON i.QUOTE_ID=q.QUOTE_ID
+    WHERE c.ID = ${id}
+  </select>
+
+  <select id="selectContractByContractStatus2" resultMap="BaseResultMap">
+    SELECT * from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote q ON i.QUOTE_ID=q.ID
+    LEFT JOIN stock s ON i.STOCK_ID=s.ID
+    LEFT JOIN enquire e ON i.ENQUIRE_ID=e.ID
+    WHERE i.STATUS = 'C001-130'
+    limit ${curPage},${pageSize}
+
+  </select>
+
+  <select id="getCountByContractStatus2" resultMap="ccount">
+    SELECT count(*) count from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote q ON i.QUOTE_ID=q.ID
+    LEFT JOIN stock s ON i.STOCK_ID=s.ID
+    LEFT JOIN enquire e ON i.ENQUIRE_ID=e.ID
+    WHERE i.STATUS = 'C001-130'
+  </select>
+
+
+  <select id="selectContractByContractStatus3" resultMap="BaseResultMap">
+    SELECT * from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote q ON i.QUOTE_ID=q.ID
+    LEFT JOIN stock s ON i.STOCK_ID=s.ID
+    LEFT JOIN enquire e ON i.ENQUIRE_ID=e.ID
+    WHERE i.STATUS = 'C001-140'
+    limit ${curPage},${pageSize}
+
+  </select>
+
+  <select id="getCountByContractStatus3" resultMap="ccount">
+    SELECT count(*) count from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote q ON i.QUOTE_ID=q.ID
+    LEFT JOIN stock s ON i.STOCK_ID=s.ID
+    LEFT JOIN enquire e ON i.ENQUIRE_ID=e.ID
+    WHERE i.STATUS = 'C001-140'
+  </select>
+
+  <select id="selectContractByContractStatus4" resultMap="BaseResultMap">
+    SELECT * from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote q ON i.QUOTE_ID=q.ID
+    LEFT JOIN stock s ON i.STOCK_ID=s.ID
+    LEFT JOIN enquire e ON i.ENQUIRE_ID=e.ID
+    WHERE i.STATUS = 'C001-150'
+    limit ${curPage},${pageSize}
+
+  </select>
+
+  <select id="getCountByContractStatus4" resultMap="ccount">
+    SELECT count(*) count from contract_apply c
+    LEFT JOIN id_mapping i ON c.ID=i.CONT_APP_ID
+    LEFT JOIN quote q ON i.QUOTE_ID=q.ID
+    LEFT JOIN stock s ON i.STOCK_ID=s.ID
+    LEFT JOIN enquire e ON i.ENQUIRE_ID=e.ID
+    WHERE i.STATUS = 'C001-150'
+  </select>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">

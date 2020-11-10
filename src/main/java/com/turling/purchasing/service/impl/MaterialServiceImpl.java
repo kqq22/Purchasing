@@ -41,4 +41,14 @@ public class MaterialServiceImpl implements MaterialService {
     public Material findMaterialById(Long id) {
         return materialMapper.selectByPrimaryKey(id);
     }
+
+    /**
+     * 根据物资编码查询物资id
+     * @param code
+     * @return
+     */
+    @Override
+    public Long findMaterialIdByCode(String code) {
+        return materialMapper.getId(code);
+    }
 }

@@ -28,6 +28,46 @@ public class Enquire implements Serializable {
 
     private String remark;
 
+    private EnquireDetail enquireDetail;
+
+    private IdMapping idMapping;
+
+    private Stock stock;
+
+    private Orders orders;
+
+    public EnquireDetail getEnquireDetail() {
+        return enquireDetail;
+    }
+
+    public void setEnquireDetail(EnquireDetail enquireDetail) {
+        this.enquireDetail = enquireDetail;
+    }
+
+    public IdMapping getIdMapping() {
+        return idMapping;
+    }
+
+    public void setIdMapping(IdMapping idMapping) {
+        this.idMapping = idMapping;
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
+    }
+
+    public Orders getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Orders orders) {
+        this.orders = orders;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
